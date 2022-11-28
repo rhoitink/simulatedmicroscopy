@@ -1,3 +1,4 @@
 from .input import CoordinateSet
+from .images import Image, HuygensImage
 
-__all__ = ["CoordinateSet"]
+__all__ = ["CoordinateSet", "Image", "HuygensImage"]
