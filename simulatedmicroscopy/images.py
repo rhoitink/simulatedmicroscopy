@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Optional, Union
 from pathlib import Path
+import h5py
 
 class Image:
     DIMENSIONS_ORDER = {'z': 0, 'y': 1, 'x': 2}
@@ -87,7 +88,6 @@ class Image:
         bool
             Whether the saving is successfull
         """
-        import h5py
 
         with h5py.File(filename, 'w') as f:
             f["Image"] = self.image
@@ -113,7 +113,6 @@ class Image:
         Image
             Resulting image with correct pixel sizes
         """
-        import h5py
 
         with h5py.File(filename, 'r') as f:
             image = f["Image"][()]
@@ -136,7 +135,6 @@ class HuygensImage(Image):
         filename : str
             Name of the Huygens-generated .h5 file
         """
-        import h5py
 
         filepath = Path(filename)
         if not filepath.exists():

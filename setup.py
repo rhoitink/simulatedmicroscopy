@@ -17,6 +17,7 @@ setup(
         "dev": [
             "black",
             "flake8",
+            "pytest",
         ]
     },
 )
