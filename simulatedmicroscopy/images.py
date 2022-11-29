@@ -25,7 +25,7 @@ class Image:
             self.pixel_sizes = np.array(pixel_sizes)
         
         # check if `pixel_sizes` has correct length
-        assert self.pixel_sizes.shape[0] == self._number_of_dimensions()
+        assert self.pixel_sizes.shape[0] == self._number_of_dimensions(), "Not current number of pixel sizes given"
 
     def _number_of_dimensions(self) -> int:
         """Get the number of dimensions of the image
@@ -71,6 +71,58 @@ class Image:
             ps *= 1e9
 
         return ps
+
+    def save_h5file(self, filename : str, description : Optional[str] = None) -> bool:
+        """Save image as h5 file (custom format, not compatible with Huygens)
+
+        Parameters
+        ----------
+        filename : str
+            Filename to save the file.
+        description : Optional[str], optional
+            Description to include in the file, by default None
+
+        Returns
+        -------
+        bool
+            Whether the saving is successfull
+        """
+        import h5py
+
+        with h5py.File(filename, 'w') as f:
+            f["Image"] = self.image
+            f["Image"].attrs['Description'] = description if description is not None else ""
+            
+            f.create_group("Metadata")
+            for dim in self.DIMENSIONS_ORDER:
+                f[f"Metadata/DimensionScale{dim.upper()}"] = self.get_pixel_sizes([dim])[0]
+
+        return True
+
+    @classmethod
+    def load_h5file(cls, filename : str):
+        """Load data from h5 file (custom format)
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file to load from
+
+        Returns
+        -------
+        Image
+            Resulting image with correct pixel sizes
+        """
+        import h5py
+
+        with h5py.File(filename, 'r') as f:
+            image = f["Image"][()]
+            pixel_sizes = [float(f[f"Metadata/DimensionScale{dim.upper()}"][()]) for dim in list("zyx")]
+
+        return cls(image = image, pixel_sizes = pixel_sizes)
+
+    def __eq__(self, other: object) -> bool:
+        return (self.image == other.image).all() and (self.get_pixel_sizes() == other.get_pixel_sizes()).all()
 
 
 class HuygensImage(Image):
