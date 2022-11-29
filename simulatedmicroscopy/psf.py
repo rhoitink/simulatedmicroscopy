@@ -3,17 +3,20 @@ from typing import Union, Optional
 from pathlib import Path
 from .images import HuygensImage, Image
 import numpy as np
-import scipy.stats 
+import scipy.stats
 
 
 class HuygensPSF(HuygensImage):
-
     def __init__(self, filename: Union[str, Path]) -> None:
         super().__init__(filename)
 
-class GaussianPSF(Image):
 
-    def __init__(self, sigmas: list[float], pixel_sizes: Optional[list[float]] = [1e-7, 1e-8, 1e-8]) -> None:
+class GaussianPSF(Image):
+    def __init__(
+        self,
+        sigmas: list[float],
+        pixel_sizes: Optional[list[float]] = [1e-7, 1e-8, 1e-8],
+    ) -> None:
         """Generate a 3D Gaussian with given sigmas to use as PSF
 
         Parameters
@@ -23,27 +26,31 @@ class GaussianPSF(Image):
         pixel_sizes : Optional[list[float]], optional
             List of pixel sizes (in zyx order) in meters, by default [1e-7, 1e-8, 1e-8].
         """
-        
+
         sigmas_nm = np.array(sigmas)
-        pixel_sizes_nm = np.round(np.array(pixel_sizes)*1e9).astype(int)
+        pixel_sizes_nm = np.round(np.array(pixel_sizes) * 1e9).astype(int)
 
         # image size in nm, 4 sigma on all sides of the Gaussian
-        image_size_nm = 4*2*sigmas_nm
+        image_size_nm = 4 * 2 * sigmas_nm
 
         # generate slice for the mgrid
-        box_slice = [slice(-b//2,b//2,s) for b,s in zip(image_size_nm,pixel_sizes_nm)]
+        box_slice = [
+            slice(-b // 2, b // 2, s) for b, s in zip(image_size_nm, pixel_sizes_nm)
+        ]
 
-        z, y, x = np.mgrid[box_slice]        
+        z, y, x = np.mgrid[box_slice]
         zyx = np.column_stack([z.flat, y.flat, x.flat])
-        
+
         # center around zero
-        mu = [0.]*3        
+        mu = [0.0] * 3
 
         # generate Gaussian with given mu and sigmas
-        gauss_psf = scipy.stats.multivariate_normal.pdf(zyx, mu, np.diag(sigmas_nm**2))
-        
+        gauss_psf = scipy.stats.multivariate_normal.pdf(
+            zyx, mu, np.diag(sigmas_nm**2)
+        )
+
         # reshape to 3D image
         gauss_psf = gauss_psf.reshape(z.shape)
-        
+
         # pass onto Image class with generated image
         super().__init__(gauss_psf, pixel_sizes)

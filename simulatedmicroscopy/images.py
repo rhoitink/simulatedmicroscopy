@@ -3,6 +3,7 @@ import numpy as np
 from typing import Optional, Union
 from pathlib import Path
 import h5py
+import scipy.signal
 
 
 class Image:
@@ -113,7 +114,7 @@ class Image:
         return True
 
     @classmethod
-    def load_h5file(cls, filename: str):
+    def load_h5file(cls, filename: str) -> type[Image]:
         """Load data from h5 file (custom format)
 
         Parameters
@@ -140,6 +141,32 @@ class Image:
         return (self.image == other.image).all() and (
             self.get_pixel_sizes() == other.get_pixel_sizes()
         ).all()
+
+    def downsample(self, downsample_factor: list[int]) -> type[Image]:
+        """Downsample the image, decrease the pixel sizes by given factors.
+        Overwrites current image and pixel sizes.
+
+        Parameters
+        ----------
+        downsample_factor : list[int]
+            Factors to downsample each dimension by, in zyx order.
+
+        Returns
+        -------
+        type[Image]
+            Resulting image, original image and pixelsizes are also overwritten
+        """
+        result = self.image
+        for dim in range(self._number_of_dimensions()):
+            result = scipy.signal.resample(
+                result, self.image.shape[dim] // downsample_factor[dim], axis=dim
+            )
+
+        self.image = result.copy()
+        del result
+        self.pixel_sizes = self.pixel_sizes * np.array(downsample_factor)
+
+        return self
 
 
 class HuygensImage(Image):

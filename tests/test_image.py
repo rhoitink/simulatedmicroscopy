@@ -90,3 +90,29 @@ def test_h5file_loading(tmp_path):
     im = Image.load_h5file(filepath)
 
     assert im == create_demo_image()
+
+
+@pytest.mark.parametrize(
+    "downsample_factor",
+    [
+        1,
+        2,
+        5,
+    ],
+)
+def test_downsample(downsample_factor):
+    im_array = np.zeros(shape=(100, 200, 500))
+    im = Image(im_array)
+
+    downsampled = im.downsample([downsample_factor] * 3)
+
+    # check if the shape of the image has decreased by `downsample_factor`
+    assert (
+        downsampled.image.shape == np.array(im_array.shape) // downsample_factor
+    ).all()
+
+    # check if the pixel_size of the image has increased by `downsample_factor`
+    assert (im.pixel_sizes == np.array([downsample_factor] * 3)).all()
+
+    # check if the original image was also updated
+    assert downsampled == im
