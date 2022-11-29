@@ -7,7 +7,7 @@ setup(
     author_email="L.D.Hoitink@uu.nl",
     long_description=open("README.md").read(),
     packages=find_packages(include=["simulatedmicroscopy", "simulatedmicroscopy.*"]),
-    python_requires='>=3.8',
+    python_requires=">=3.8",
     install_requires=[
         "numpy",
         "matplotlib",
@@ -19,6 +19,7 @@ setup(
             "black",
             "flake8",
             "pytest",
+            "pre-commit",
         ]
     },
 )

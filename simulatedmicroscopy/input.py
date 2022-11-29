@@ -1,9 +1,9 @@
 from __future__ import annotations
 import numpy as np
 
-class CoordinateSet:
 
-    def __init__(self, coordinates : list or np.ndarray) -> None:
+class CoordinateSet:
+    def __init__(self, coordinates: list or np.ndarray) -> None:
         """Wrapper to hold set of particle coordinates
 
         Parameters
@@ -13,7 +13,7 @@ class CoordinateSet:
         """
         self.coordinates = np.array(coordinates)
 
-    def scale(self, factor : float = 1.) -> np.ndarray:
+    def scale(self, factor: float = 1.0) -> np.ndarray:
         """Update the list of coordinates by multiplication with `factor`
 
         Parameters
