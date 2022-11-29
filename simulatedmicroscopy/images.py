@@ -168,6 +168,26 @@ class Image:
 
         return self
 
+    def convolve(self, other : type[Image]) -> type[Image]:
+        """Convolve this image with another image (a PSF). The image is overwritten by the result of the convolution.
+
+        Parameters
+        ----------
+        other : type[Image]
+            The image to convolve this image with
+
+        Returns
+        -------
+        type[Image]
+            The convolved image
+        """
+        if not (self.pixel_sizes == other.pixel_sizes).all():
+            raise ValueError("Cannot convolve images with different pixel sizes")
+        
+        self.image = scipy.signal.convolve(self.image, other.image, mode='same')
+
+        return self
+
 
 class HuygensImage(Image):
     def __init__(self, filename: Union[str, Path]) -> None:

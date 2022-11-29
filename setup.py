@@ -19,7 +19,7 @@ setup(
             "black",
             "flake8",
             "pytest",
-            "pre-commit",
+            "pytest-cov",
         ]
     },
 )

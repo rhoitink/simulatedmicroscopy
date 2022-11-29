@@ -116,3 +116,27 @@ def test_downsample(downsample_factor):
 
     # check if the original image was also updated
     assert downsampled == im
+
+
+@pytest.mark.parametrize(
+    "multiplication_factor",
+    [
+        0.5,
+        1.,
+        2.,
+    ],
+)
+def test_convolution(multiplication_factor):
+    im = Image(np.ones(shape=(10,10,10)))
+    psf = Image(np.ones(shape=(1,1,1))*multiplication_factor)
+
+    convolved = im.convolve(psf)
+
+    assert im == convolved
+
+def test_convolution_wrongpixelsize():
+    im = create_demo_image()
+    psf = Image(np.ones(shape=(1,1,1)), pixel_sizes=(10.,10.,10.))
+
+    with pytest.raises(ValueError):
+        im.convolve(psf)
