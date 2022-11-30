@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Union, Optional
 from pathlib import Path
-from .images import HuygensImage, Image
+from .image import HuygensImage, Image
 import numpy as np
 import scipy.stats
 
