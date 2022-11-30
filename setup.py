@@ -20,6 +20,11 @@ setup(
             "flake8",
             "pytest",
             "pytest-cov",
+        ],
+        "docs": [
+            "mkdocs",
+            "mkdocs-material",
+            "mkdocstrings",
         ]
     },
 )

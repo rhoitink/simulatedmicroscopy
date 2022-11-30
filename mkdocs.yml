@@ -1,0 +1,14 @@
+site_name: Simulated Microscopy Documentation
+
+theme:
+  name: material
+
+nav:
+    - index.md
+    - installation.md
+    - example-usage.md
+    - api.md
+
+plugins:
+  - search
+  - mkdocstrings

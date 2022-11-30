@@ -4,7 +4,7 @@ from typing import Optional, Union
 from pathlib import Path
 import h5py
 import scipy.signal
-from .input import CoordinateSet
+from .input import Coordinates
 
 
 class Image:
@@ -140,7 +140,7 @@ class Image:
 
     @classmethod
     def create_point_image(
-        cls, coordinates: type[CoordinateSet], pixel_sizes: list[float]
+        cls, coordinates: type[Coordinates], pixel_sizes: list[float]
     ) -> type[Image]:
         """Create point source image in which every point from the set of coordinates is represented by a single white pixel
 
@@ -163,7 +163,9 @@ class Image:
         shift = np.round(0.5 / pixel_sizes_um).astype(int)
 
         # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
-        scaled_coords = coordinates.get_coordinates() / pixel_sizes_um[::-1, np.newaxis]
+        scaled_coords = (
+            coordinates.get_coordinates().T / pixel_sizes_um[::-1, np.newaxis]
+        )
 
         # round to integer to create point at certain pixel
         xs, ys, zs = np.round(scaled_coords).astype(int)

@@ -1,4 +1,4 @@
-from simulatedmicroscopy import CoordinateSet
+from simulatedmicroscopy import Coordinates
 import numpy as np
 import pytest
 
@@ -17,14 +17,14 @@ def demo_coordinates():
 def test_coordinates():
     coordinates = demo_coordinates()
 
-    cs = CoordinateSet(coordinates)
+    cs = Coordinates(coordinates)
 
     assert (cs.coordinates == coordinates).all()
 
 
 @pytest.mark.parametrize("scaling_factor", [0.3, 1.0, 1.5, 2.0])
 def test_scaling(scaling_factor):
-    cs = CoordinateSet(demo_coordinates())
+    cs = Coordinates(demo_coordinates())
 
     scaled_coords = cs.scale(scaling_factor)
 

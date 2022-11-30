@@ -1,9 +1,10 @@
 from __future__ import annotations
+from typing import Union
 import numpy as np
 
 
-class CoordinateSet:
-    def __init__(self, coordinates: list or np.ndarray) -> None:
+class Coordinates:
+    def __init__(self, coordinates: Union[list, np.ndarray]) -> None:
         """Wrapper to hold set of particle coordinates
 
         Parameters

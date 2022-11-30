@@ -154,9 +154,9 @@ def test_noise():
 
 
 def test_point_image():
-    from simulatedmicroscopy import CoordinateSet
+    from simulatedmicroscopy import Coordinates
 
-    cs = CoordinateSet(
+    cs = Coordinates(
         [
             [0.0, 0.0, 1.0],
             [1.0, 0.0, 0.0],
