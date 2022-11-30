@@ -168,7 +168,7 @@ class Image:
 
         return self
 
-    def convolve(self, other : type[Image]) -> type[Image]:
+    def convolve(self, other: type[Image]) -> type[Image]:
         """Convolve this image with another image (a PSF). The image is overwritten by the result of the convolution.
 
         Parameters
@@ -183,8 +183,8 @@ class Image:
         """
         if not (self.pixel_sizes == other.pixel_sizes).all():
             raise ValueError("Cannot convolve images with different pixel sizes")
-        
-        self.image = scipy.signal.convolve(self.image, other.image, mode='same')
+
+        self.image = scipy.signal.convolve(self.image, other.image, mode="same")
 
         return self
 

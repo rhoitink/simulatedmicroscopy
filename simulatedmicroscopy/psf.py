@@ -35,10 +35,10 @@ class GaussianPSF(Image):
         """
         sigmas_nm = np.array(sigmas)
         pixel_sizes_nm = np.round(np.array(pixel_sizes) * 1e9).astype(int)
-        
+
         if not (pixel_sizes_nm < sigmas_nm).all():
             raise ValueError("Pixel sizes should be smaller than given sigmas")
-        
+
         # image size in nm, 4 sigma on all sides of the Gaussian
         image_size_nm = 4 * 2 * sigmas_nm
 
