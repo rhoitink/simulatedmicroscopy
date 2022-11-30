@@ -8,6 +8,13 @@ import scipy.stats
 
 class HuygensPSF(HuygensImage):
     def __init__(self, filename: Union[str, Path]) -> None:
+        """Generate PSF from Huygens .h5 file
+
+        Parameters
+        ----------
+        filename : Union[str, Path]
+            Filename/path to the .h5 file
+        """
         super().__init__(filename)
 
 
@@ -22,14 +29,16 @@ class GaussianPSF(Image):
         Parameters
         ----------
         sigmas : list[float]
-            List of sigmas (in zyx order) to use for the Gaussian, given in nanometers. Please note that this is given in nanometers, while the pixel size is given in meters.
+            List of sigmas (in zyx order) to use for the Gaussian distribution, given in nanometers. Please note that this is given in nanometers, while the pixel size is given in meters.
         pixel_sizes : Optional[list[float]], optional
             List of pixel sizes (in zyx order) in meters, by default [1e-7, 1e-8, 1e-8].
         """
-
         sigmas_nm = np.array(sigmas)
         pixel_sizes_nm = np.round(np.array(pixel_sizes) * 1e9).astype(int)
-
+        
+        if not (pixel_sizes_nm < sigmas_nm).all():
+            raise ValueError("Pixel sizes should be smaller than given sigmas")
+        
         # image size in nm, 4 sigma on all sides of the Gaussian
         image_size_nm = 4 * 2 * sigmas_nm
 
