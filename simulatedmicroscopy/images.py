@@ -188,6 +188,24 @@ class Image:
 
         return self
 
+    def noisify(self, lam: float = 1.0) -> type[Image]:
+        """Add Poisson noise to the image
+
+        Parameters
+        ----------
+        lam : float, optional
+            `lambda` parameter to pass onto the Poisson distribution. Expected number of events occurring in a fixed-time interval, by default 1.0
+
+        Returns
+        -------
+        type[Image]
+            The image with noise added
+        """
+        rng = np.random.default_rng()
+        self.image = self.image * rng.poisson(lam, size=self.image.shape)
+
+        return self
+
 
 class HuygensImage(Image):
     def __init__(self, filename: Union[str, Path]) -> None:

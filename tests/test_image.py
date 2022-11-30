@@ -4,7 +4,7 @@ import pytest
 
 
 def create_demo_image():
-    return Image(np.zeros(shape=(10, 10, 10)), pixel_sizes=(1e-7, 1e-8, 1e-8))
+    return Image(np.ones(shape=(10, 10, 10)), pixel_sizes=(1e-7, 1e-8, 1e-8))
 
 
 def test_3D_image():
@@ -141,3 +141,13 @@ def test_convolution_wrongpixelsize():
 
     with pytest.raises(ValueError):
         im.convolve(psf)
+
+
+def test_noise():
+    im = create_demo_image()
+
+    # check if returns correct image
+    assert im.noisify() != create_demo_image()
+
+    # check if original image was also changed
+    assert im != create_demo_image()
