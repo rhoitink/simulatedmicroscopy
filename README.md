@@ -12,7 +12,7 @@ Written by Roy Hoitink (L.D.Hoitink@uu.nl)
 python -m pip install git+https://github.com/rhoitink/simulatedmicroscopy
 ```
 
-For more details, look at [the installation file in docs](./docs/install.md)
+For more details, look at [the installation file in docs](./docs/installation.md)
 
 ## Documentation
 
