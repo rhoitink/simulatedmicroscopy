@@ -151,3 +151,19 @@ def test_noise():
 
     # check if original image was also changed
     assert im != create_demo_image()
+
+
+def test_point_image():
+    from simulatedmicroscopy import CoordinateSet
+
+    cs = CoordinateSet(
+        [
+            [0.0, 0.0, 1.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+        ]
+    )
+
+    im = Image.create_point_image(cs, [100e-9, 10e-9, 10e-9])
+
+    assert im.image.sum() > 0.0

@@ -4,6 +4,7 @@ from typing import Optional, Union
 from pathlib import Path
 import h5py
 import scipy.signal
+from .input import CoordinateSet
 
 
 class Image:
@@ -134,6 +135,52 @@ class Image:
                 float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
                 for dim in list("zyx")
             ]
+
+        return cls(image=image, pixel_sizes=pixel_sizes)
+
+    @classmethod
+    def create_point_image(
+        cls, coordinates: type[CoordinateSet], pixel_sizes: list[float]
+    ) -> type[Image]:
+        """Create point source image in which every point from the set of coordinates is represented by a single white pixel
+
+        Parameters
+        ----------
+        coordinates : type[CoordinateSet]
+            Set of coordinates
+        pixel_sizes : list[float]
+            List of pixel sizes in meters, in zyx order.
+
+        Returns
+        -------
+        type[Image]
+            Genereated image
+        """
+        # convert pixel sizes to micrometers for calculatation
+        pixel_sizes_um = np.array(pixel_sizes) * 1e6
+
+        # give 0.5 µm space around the edges
+        shift = np.round(0.5 / pixel_sizes_um).astype(int)
+
+        # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
+        scaled_coords = coordinates.get_coordinates() / pixel_sizes_um[::-1, np.newaxis]
+
+        # round to integer to create point at certain pixel
+        xs, ys, zs = np.round(scaled_coords).astype(int)
+
+        # limits for the image, size of each dimension + 2*shift (once on each side)
+        limits = (
+            zs.max() + shift[0] * 2,
+            ys.max() + shift[1] * 2,
+            xs.max() + shift[2] * 2,
+        )
+
+        image = np.zeros(shape=limits)
+
+        for z, y, x in zip(zs, ys, xs):
+            # set pixel value to 1 at location of particles
+            # include shift to have some spacing at edges of image
+            image[z + shift[0], y + shift[1], x + shift[2]] = 1.0
 
         return cls(image=image, pixel_sizes=pixel_sizes)
 

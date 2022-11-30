@@ -29,3 +29,21 @@ class CoordinateSet:
         self.coordinates *= factor
 
         return self.coordinates
+
+    def get_coordinates(self, unit: str = "µm") -> np.ndarray:
+        """Get the array containing the particle coordinates
+
+        Parameters
+        ----------
+        unit : str, optional
+            Unit to give the coordinates in. One of [nm, µm], by default "µm"
+
+        Returns
+        -------
+        np.ndarray
+            Array of coordinates (N,3) shape
+        """
+        scaling_factor = 1.0
+        if unit == "nm":
+            scaling_factor = 1e3
+        return scaling_factor * self.coordinates
