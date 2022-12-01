@@ -24,7 +24,7 @@ setup(
         "docs": [
             "mkdocs",
             "mkdocs-material",
-            "mkdocstrings",
+            "mkdocstrings[python]",
         ]
     },
 )
