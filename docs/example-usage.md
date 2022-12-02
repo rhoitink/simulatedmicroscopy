@@ -59,7 +59,6 @@ coords = Coordinates(
 image = Image.create_point_image(coords, 
                             pixel_sizes = psf.get_pixel_sizes())
 
-# it's good to realize that this image adds some spacing (0.5 µm) on all sides
 ```
 
 You now have a point source image in the `image` variable.
