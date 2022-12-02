@@ -14,6 +14,9 @@ dev:
 docs:
 	mkdocs build
 
+serve-docs:
+	mkdocs serve
+
 test:
 	pytest tests
 

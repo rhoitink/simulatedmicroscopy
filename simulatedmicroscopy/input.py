@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Union
 import numpy as np
+import warnings
 
 
 class Coordinates:
@@ -12,7 +13,20 @@ class Coordinates:
         coordinates : list or np.ndarray
             List of coordinates
         """
-        self.coordinates = np.array(coordinates)
+        coords = np.array(coordinates)
+        if len(coords.shape) != 2:
+            raise ValueError("Please give coordinates in (N,3) format in xyz order")
+
+        if coords.shape[1] not in [2, 3]:
+            if coords.shape[0] in [2, 3]:
+                warnings.warn(
+                    "Coords were given in wrong shape, should be an (N,Ndim) array, found (Ndim,N) array, transposing coordinates"
+                )
+                coords = coords.transpose()
+            else:
+                raise ValueError("Please give coordinates in (N,3) format in xyz order")
+
+        self.coordinates = coords
 
     def scale(self, factor: float = 1.0) -> np.ndarray:
         """Update the list of coordinates by multiplication with `factor`

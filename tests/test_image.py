@@ -153,7 +153,7 @@ def test_noise():
     assert im != create_demo_image()
 
 
-def test_point_image():
+def test_point_image(tmp_path):
     from simulatedmicroscopy import Coordinates
 
     cs = Coordinates(
@@ -167,3 +167,41 @@ def test_point_image():
     im = Image.create_point_image(cs, [100e-9, 10e-9, 10e-9])
 
     assert im.image.sum() > 0.0
+    assert im.pixel_coordinates is not None
+
+    # check if we can restore the pixel coordinates from the h5 file
+    fp = tmp_path / "test_pointimage.h5"
+    im.save_h5file(fp)
+
+    im2 = im.load_h5file(fp)
+
+    assert im2.pixel_coordinates is not None
+    assert im == im2
+
+
+@pytest.mark.parametrize(
+    "downsample_factor",
+    [
+        1,
+        2,
+        10,
+    ],
+)
+def test_pixel_coordinates_after_downscale(downsample_factor):
+    from simulatedmicroscopy import Coordinates
+
+    cs = Coordinates(
+        [
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [0.0, 5.0, 0.0],
+        ]
+    )
+
+    im = Image.create_point_image(cs, [100e-9, 10e-9, 10e-9])
+
+    pixel_coords_before = im.get_pixel_coordinates().copy()
+
+    im.downsample([downsample_factor] * 3)
+
+    assert (pixel_coords_before == im.get_pixel_coordinates() * downsample_factor).all()

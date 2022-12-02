@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="simulatedmicroscopy",
-    version="0.1.0",
+    version="0.2.0",
     author="Roy Hoitink",
     author_email="L.D.Hoitink@uu.nl",
     long_description=open("README.md").read(),
@@ -24,7 +24,7 @@ setup(
         "docs": [
             "mkdocs",
             "mkdocs-material",
-            "mkdocstrings",
+            "mkdocstrings[python]",
         ]
     },
 )

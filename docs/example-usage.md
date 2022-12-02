@@ -59,10 +59,17 @@ coords = Coordinates(
 image = Image.create_point_image(coords, 
                             pixel_sizes = psf.get_pixel_sizes())
 
-# it's good to realize that this image adds some spacing (0.5 µm) on all sides
 ```
 
 You now have a point source image in the `image` variable.
+
+The coordinates of the particles are stored as pixel indices (in `zyx` order), to retrieve them, run:
+
+```python
+pixel_indices = image.get_pixel_coordinates()
+
+print(pixel_indices[0]) # position of first particle
+```
 
 ## 3. Convolution of your image with the PSF
 

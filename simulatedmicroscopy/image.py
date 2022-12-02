@@ -10,6 +10,9 @@ from .input import Coordinates
 class Image:
     DIMENSIONS_ORDER = {"z": 0, "y": 1, "x": 2}
 
+    pixel_coordinates = None
+    """Pixel coordinates (z,y,x) where particles are positioned"""
+
     def __init__(
         self, image: np.ndarray, pixel_sizes: Optional[list[float]] = None
     ) -> None:
@@ -112,6 +115,10 @@ class Image:
                     [dim]
                 )[0]
 
+            # store pixel coordinates if available
+            if self.pixel_coordinates is not None:
+                f["Metadata/PixelCoordinates"] = self.pixel_coordinates
+
         return True
 
     @classmethod
@@ -135,8 +142,15 @@ class Image:
                 float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
                 for dim in list("zyx")
             ]
+            if "PixelCoordinates" in f["Metadata"].keys():
+                pixel_coordinates = f["Metadata/PixelCoordinates"][()]
+            else:
+                pixel_coordinates = None
 
-        return cls(image=image, pixel_sizes=pixel_sizes)
+        im = cls(image=image, pixel_sizes=pixel_sizes)
+        if pixel_coordinates is not None:
+            im.pixel_coordinates = pixel_coordinates
+        return im
 
     @classmethod
     def create_point_image(
@@ -159,9 +173,6 @@ class Image:
         # convert pixel sizes to micrometers for calculatation
         pixel_sizes_um = np.array(pixel_sizes) * 1e6
 
-        # give 0.5 µm space around the edges
-        shift = np.round(0.5 / pixel_sizes_um).astype(int)
-
         # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
         scaled_coords = (
             coordinates.get_coordinates().T / pixel_sizes_um[::-1, np.newaxis]
@@ -170,21 +181,21 @@ class Image:
         # round to integer to create point at certain pixel
         xs, ys, zs = np.round(scaled_coords).astype(int)
 
-        # limits for the image, size of each dimension + 2*shift (once on each side)
+        # limits for the image, size of each dimension, as coordinates cannot be negative
         limits = (
-            zs.max() + shift[0] * 2,
-            ys.max() + shift[1] * 2,
-            xs.max() + shift[2] * 2,
+            zs.max() + 1,
+            ys.max() + 1,
+            xs.max() + 1,
         )
 
         image = np.zeros(shape=limits)
 
         for z, y, x in zip(zs, ys, xs):
             # set pixel value to 1 at location of particles
-            # include shift to have some spacing at edges of image
-            image[z + shift[0], y + shift[1], x + shift[2]] = 1.0
-
-        return cls(image=image, pixel_sizes=pixel_sizes)
+            image[z, y, x] = 1.0
+        im = cls(image=image, pixel_sizes=pixel_sizes)
+        im.pixel_coordinates = np.transpose([zs, ys, xs])
+        return im
 
     def __eq__(self, other: object) -> bool:
         return (self.image == other.image).all() and (
@@ -213,7 +224,15 @@ class Image:
 
         self.image = result.copy()
         del result
+
+        # adapt pixel sizes
         self.pixel_sizes = self.pixel_sizes * np.array(downsample_factor)
+
+        # adapt particle coordinates
+        if self.pixel_coordinates is not None:
+            self.pixel_coordinates = (
+                self.pixel_coordinates // np.array(downsample_factor)[::-1]
+            )
 
         return self
 
@@ -254,6 +273,16 @@ class Image:
         self.image = self.image * rng.poisson(lam, size=self.image.shape)
 
         return self
+
+    def get_pixel_coordinates(self) -> np.ndarray:
+        """Get list of pixel indices containing particles
+
+        Returns
+        -------
+        np.ndarray
+            Numpy (N,3) array in zyx order with indices of pixels containing particles
+        """
+        return self.pixel_coordinates
 
 
 class HuygensImage(Image):
