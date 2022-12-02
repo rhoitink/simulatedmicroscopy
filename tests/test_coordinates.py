@@ -49,17 +49,10 @@ def test_coordinates_wrongshape_1d():
     with pytest.raises(ValueError):
         Coordinates(coordinates)
 
-def test_coordinates_wrongshape_1d():
-    # instead of given an (N,3) array, give 1d array)
-    coordinates = demo_coordinates().flat
-
-    # should raise ValueError
-    with pytest.raises(ValueError):
-        Coordinates(coordinates)
 
 def test_coordinates_wrongshape_5x5():
     # instead of given an (N,3) array, give 5x5 array)
-    coordinates = np.zeros(shape=(5,5))
+    coordinates = np.zeros(shape=(5, 5))
 
     # should raise ValueError
     with pytest.raises(ValueError):
@@ -75,7 +68,8 @@ def test_scaling(scaling_factor):
     assert (cs.coordinates == scaled_coords).all()
     assert (cs.coordinates == demo_coordinates() * scaling_factor).all()
 
-@pytest.mark.parametrize("unit,scaling_factor", [("nm", 1e3), ("µm", 1.)])
+
+@pytest.mark.parametrize("unit,scaling_factor", [("nm", 1e3), ("µm", 1.0)])
 def test_get_coordinates_unit(unit, scaling_factor):
     cs = Coordinates(demo_coordinates())
 
