@@ -40,6 +40,17 @@ class BaseParticle:
         """
         return self.response().shape
 
+    @property
+    def size(self) -> type[np.ndarray]:
+        """Physical size of the response array, in meters for all dimensions
+
+        Returns
+        -------
+        type[np.ndarray]
+            List of physical dimensions in meters in z,y,x order.
+        """
+        return np.array(self.shape) * self.pixel_sizes
+
 
 class PointParticle(BaseParticle):
     def __init__(self, pixel_sizes: list[float], *args, **kwargs) -> None:

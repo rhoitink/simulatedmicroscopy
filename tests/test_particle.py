@@ -27,6 +27,12 @@ def test_particle_has_shape():
     assert isinstance(sphere.shape, tuple)
 
 
+def test_particle_has_size():
+    sphere = Sphere([1e-6, 1e-6, 1e-6], 2e-6)
+
+    assert isinstance(sphere.size, np.ndarray)
+
+
 def test_sphere_wrong_radius_format():
     with pytest.raises(ValueError):
         Sphere([1e-6, 1e-6, 1e-6], [5e-6, 5e-6])
