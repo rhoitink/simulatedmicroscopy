@@ -1,0 +1,32 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Simulated Microscopy
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Leroy Daniël
+    family-names: Hoitink
+    email: L.D.Hoitink@uu.nl
+    affiliation: >-
+      Soft Condensed Matter & Biophysics, Debye Institute
+      for Nanomaterials Science, Utrecht University
+    orcid: 'https://orcid.org/0000-0002-3470-0078'
+repository-code: 'https://github.com/rhoitink/simulatedmicroscopy'
+url: 'https://rhoitink.github.io/simulatedmicroscopy/'
+abstract: >-
+  Python package to create synthetic (fluorescence)
+  microscopy images of (nano)particles and convolution with
+  a point spread function
+keywords:
+  - fluorescence microscopy
+  - synthetic images
+  - confocal microscopy
+  - point spread function
+  - image generation
+license: MIT
+version: v0.3.0
+date-released: '2023-04-26'
