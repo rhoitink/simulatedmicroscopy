@@ -12,8 +12,8 @@ Written by Roy Hoitink (L.D.Hoitink@uu.nl)
 python -m pip install git+https://github.com/rhoitink/simulatedmicroscopy
 ```
 
-For more details, look at [the installation file in docs](./docs/installation.md)
+For more details, look at [the installation file](https://rhoitink.github.io/simulatedmicroscopy/installation/)
 
 ## Documentation
 
-Available in the [docs folder](./docs). There you can also find an [example script](./docs/example-usage.md).
+Available in at [rhoitink.github.io/simulatedmicroscopy/](https://rhoitink.github.io/simulatedmicroscopy/). There you can also find an [example script](https://rhoitink.github.io/simulatedmicroscopy/example-usage/).
