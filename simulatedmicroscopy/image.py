@@ -5,6 +5,8 @@ from pathlib import Path
 import h5py
 import scipy.signal
 from .input import Coordinates
+from .particle import BaseParticle
+from .util import overlap_arrays
 
 
 class Image:
@@ -152,11 +154,11 @@ class Image:
             im.pixel_coordinates = pixel_coordinates
         return im
 
-    @classmethod
-    def create_point_image(
-        cls, coordinates: type[Coordinates], pixel_sizes: list[float]
-    ) -> type[Image]:
-        """Create point source image in which every point from the set of coordinates is represented by a single white pixel
+    @staticmethod
+    def _get_point_image_array(
+        coordinates: type[Coordinates], pixel_sizes: list[float]
+    ) -> type[tuple]:
+        """Internal method supporting the create_point_image to create a point image array
 
         Parameters
         ----------
@@ -167,8 +169,8 @@ class Image:
 
         Returns
         -------
-        type[Image]
-            Genereated image
+        type[tuple]
+            Tuple with ((zs,ys,xs), image)
         """
         # convert pixel sizes to micrometers for calculatation
         pixel_sizes_um = np.array(pixel_sizes) * 1e6
@@ -193,8 +195,73 @@ class Image:
         for z, y, x in zip(zs, ys, xs):
             # set pixel value to 1 at location of particles
             image[z, y, x] = 1.0
+
+        return ((zs, ys, xs), image)
+
+    @classmethod
+    def create_point_image(
+        cls, coordinates: type[Coordinates], pixel_sizes: list[float]
+    ) -> type[Image]:
+        """Create point source image in which every point from the set of coordinates is represented by a single white pixel
+
+        Parameters
+        ----------
+        coordinates : type[CoordinateSet]
+            Set of coordinates
+        pixel_sizes : list[float]
+            List of pixel sizes in meters, in zyx order.
+
+        Returns
+        -------
+        type[Image]
+            Genereated image
+        """
+        (zs, ys, xs), image = cls._get_point_image_array(coordinates, pixel_sizes)
+
         im = cls(image=image, pixel_sizes=pixel_sizes)
         im.pixel_coordinates = np.transpose([zs, ys, xs])
+        return im
+
+    @classmethod
+    def create_particle_image(
+        cls, coordinates: type[Coordinates], particle: type[BaseParticle]
+    ) -> type[Image]:
+        """Create image in which every point from the set of coordinates is represented by a given `particle`
+
+        Parameters
+        ----------
+        coordinates : type[CoordinateSet]
+            Set of coordinates
+        particle : list[BaseParticle]
+            Particle to use for image, will also use its pixel size for the final image
+
+        Returns
+        -------
+        type[Image]
+            Genereated image
+        """
+        # convert pixel sizes to micrometers for calculatation
+        pixel_sizes_um = np.array(particle.pixel_sizes) * 1e6
+
+        # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
+        scaled_coords = (
+            coordinates.get_coordinates().T / pixel_sizes_um[::-1, np.newaxis]
+        )
+
+        particle_offset = (
+            np.array(particle.shape) / 2.0
+        )  # offset coordinates by half the size of the box, such that the coordinate points to the middle of the particle
+
+        # round to integer to create point at certain pixel
+        xs, ys, zs = np.round(scaled_coords).astype(int)
+
+        image = np.zeros(shape=[1 for _ in particle.shape])
+        particle_response = particle.response().copy()
+        for x, y, z in zip(xs, ys, zs):
+            image = overlap_arrays(image, particle_response, offset=(z, y, x))
+
+        im = cls(image=image, pixel_sizes=particle.pixel_sizes)
+        im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
         return im
 
     def __eq__(self, other: object) -> bool:
