@@ -1,4 +1,6 @@
 from simulatedmicroscopy.particle import Sphere, Shell
+from simulatedmicroscopy.image import Image
+from simulatedmicroscopy.input import Coordinates
 import pytest
 import numpy as np
 
@@ -51,6 +53,31 @@ def test_can_create_shell():
 def test_too_thin_shell():
     with pytest.raises(ValueError):
         Shell([1e-6, 1e-6, 1e-6], 2e-6, 1e-7)
+
+
+def test_can_create_image():
+    particle = Sphere([1e-6, 1e-6, 1e-6], 2e-6)
+    coords = Coordinates([[0.0, 0.0, 0.0], [0.0, 5.0, 0.0]])
+    im = Image.create_particle_image(coords, particle)
+    assert im.image.sum() > 0.0
+
+
+def test_particle_image_values():
+    particle = Sphere([1e-6, 1e-6, 1e-6], 2e-6)
+    coords = Coordinates([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+    im = Image.create_particle_image(coords, particle)
+    # summed pixel intensity should be twice the single particle intensity
+    # for two overlapping identical particles
+    assert im.image.sum() == 2.0 * particle.response().sum()
+
+
+def test_particle_image_size():
+    diameter_um = 2.0
+    particle = Sphere([1e-6, 1e-6, 1e-6], 1e-6 * diameter_um / 2.0)
+    coords = Coordinates([[0.0, 0.0, 0.0], [0.0, diameter_um, 0.0]])
+    im = Image.create_particle_image(coords, particle)
+    # image size should be twice the particle size when placed 1 diameter apart
+    assert np.prod(im.image.shape) == 2.0 * np.prod(particle.shape)
 
 
 @pytest.mark.parametrize(
