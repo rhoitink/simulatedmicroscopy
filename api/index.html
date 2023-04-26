@@ -1,0 +1,2231 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../example-usage/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+    
+    
+      
+        <title>API Reference - Simulated Microscopy Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ded33207.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Simulated Microscopy Documentation" class="md-header__button md-logo" aria-label="Simulated Microscopy Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Simulated Microscopy Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Simulated Microscopy Documentation" class="md-nav__button md-logo" aria-label="Simulated Microscopy Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Simulated Microscopy Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Simulated Microscopy documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../example-usage/" class="md-nav__link">
+        Example usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        API Reference
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy" class="md-nav__link">
+    simulatedmicroscopy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Coordinates" class="md-nav__link">
+    Coordinates
+  </a>
+  
+    <nav class="md-nav" aria-label="Coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates" class="md-nav__link">
+    get_coordinates()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_coordinates()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale" class="md-nav__link">
+    scale()
+  </a>
+  
+    <nav class="md-nav" aria-label="scale()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.GaussianPSF" class="md-nav__link">
+    GaussianPSF
+  </a>
+  
+    <nav class="md-nav" aria-label="GaussianPSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.GaussianPSF.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.GaussianPSF.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.HuygensImage" class="md-nav__link">
+    HuygensImage
+  </a>
+  
+    <nav class="md-nav" aria-label="HuygensImage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.HuygensImage.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.HuygensImage.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.HuygensPSF" class="md-nav__link">
+    HuygensPSF
+  </a>
+  
+    <nav class="md-nav" aria-label="HuygensPSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.HuygensPSF.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.HuygensPSF.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Image" class="md-nav__link">
+    Image
+  </a>
+  
+    <nav class="md-nav" aria-label="Image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.pixel_coordinates" class="md-nav__link">
+    pixel_coordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve" class="md-nav__link">
+    convolve()
+  </a>
+  
+    <nav class="md-nav" aria-label="convolve()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image" class="md-nav__link">
+    create_particle_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="create_particle_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image" class="md-nav__link">
+    create_point_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="create_point_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample" class="md-nav__link">
+    downsample()
+  </a>
+  
+    <nav class="md-nav" aria-label="downsample()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_coordinates" class="md-nav__link">
+    get_pixel_coordinates()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_pixel_coordinates()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_coordinates--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes" class="md-nav__link">
+    get_pixel_sizes()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_pixel_sizes()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file" class="md-nav__link">
+    load_h5file()
+  </a>
+  
+    <nav class="md-nav" aria-label="load_h5file()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify" class="md-nav__link">
+    noisify()
+  </a>
+  
+    <nav class="md-nav" aria-label="noisify()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file" class="md-nav__link">
+    save_h5file()
+  </a>
+  
+    <nav class="md-nav" aria-label="save_h5file()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Shell" class="md-nav__link">
+    Shell
+  </a>
+  
+    <nav class="md-nav" aria-label="Shell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Shell.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Shell.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Sphere" class="md-nav__link">
+    Sphere
+  </a>
+  
+    <nav class="md-nav" aria-label="Sphere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Sphere.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Sphere.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy" class="md-nav__link">
+    simulatedmicroscopy
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Coordinates" class="md-nav__link">
+    Coordinates
+  </a>
+  
+    <nav class="md-nav" aria-label="Coordinates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates" class="md-nav__link">
+    get_coordinates()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_coordinates()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.get_coordinates--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale" class="md-nav__link">
+    scale()
+  </a>
+  
+    <nav class="md-nav" aria-label="scale()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.input.Coordinates.scale--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.GaussianPSF" class="md-nav__link">
+    GaussianPSF
+  </a>
+  
+    <nav class="md-nav" aria-label="GaussianPSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.GaussianPSF.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.GaussianPSF.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.HuygensImage" class="md-nav__link">
+    HuygensImage
+  </a>
+  
+    <nav class="md-nav" aria-label="HuygensImage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.HuygensImage.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.HuygensImage.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.HuygensPSF" class="md-nav__link">
+    HuygensPSF
+  </a>
+  
+    <nav class="md-nav" aria-label="HuygensPSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.HuygensPSF.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.psf.HuygensPSF.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Image" class="md-nav__link">
+    Image
+  </a>
+  
+    <nav class="md-nav" aria-label="Image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.pixel_coordinates" class="md-nav__link">
+    pixel_coordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve" class="md-nav__link">
+    convolve()
+  </a>
+  
+    <nav class="md-nav" aria-label="convolve()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.convolve--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image" class="md-nav__link">
+    create_particle_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="create_particle_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_particle_image--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image" class="md-nav__link">
+    create_point_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="create_point_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.create_point_image--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample" class="md-nav__link">
+    downsample()
+  </a>
+  
+    <nav class="md-nav" aria-label="downsample()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.downsample--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_coordinates" class="md-nav__link">
+    get_pixel_coordinates()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_pixel_coordinates()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_coordinates--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes" class="md-nav__link">
+    get_pixel_sizes()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_pixel_sizes()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_pixel_sizes--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file" class="md-nav__link">
+    load_h5file()
+  </a>
+  
+    <nav class="md-nav" aria-label="load_h5file()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.load_h5file--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify" class="md-nav__link">
+    noisify()
+  </a>
+  
+    <nav class="md-nav" aria-label="noisify()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.noisify--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file" class="md-nav__link">
+    save_h5file()
+  </a>
+  
+    <nav class="md-nav" aria-label="save_h5file()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.save_h5file--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Shell" class="md-nav__link">
+    Shell
+  </a>
+  
+    <nav class="md-nav" aria-label="Shell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Shell.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Shell.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.Sphere" class="md-nav__link">
+    Sphere
+  </a>
+  
+    <nav class="md-nav" aria-label="Sphere">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Sphere.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.particle.Sphere.__init__--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="api-reference">API Reference</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+<a id="simulatedmicroscopy"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.Coordinates" class="doc doc-heading">
+        <code>Coordinates</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.input.Coordinates.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wrapper to hold set of particle coordinates</p>
+<h5 id="simulatedmicroscopy.input.Coordinates.__init__--parameters">Parameters</h5>
+
+<details class="coordinates-">
+  <summary>list or np.ndarray</summary>
+  <p>List of coordinates</p>
+</details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.input.Coordinates.get_coordinates" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_coordinates</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;µm&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get the array containing the particle coordinates</p>
+<h5 id="simulatedmicroscopy.input.Coordinates.get_coordinates--parameters">Parameters</h5>
+
+<details class="unit-">
+  <summary>str, optional</summary>
+  <p>Unit to give the coordinates in. One of [nm, µm], by default "µm"</p>
+</details>      <h5 id="simulatedmicroscopy.input.Coordinates.get_coordinates--returns">Returns</h5>
+<p>np.ndarray
+    Array of coordinates (N,3) shape</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.input.Coordinates.scale" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">scale</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Update the list of coordinates by multiplication with <code>factor</code></p>
+<h5 id="simulatedmicroscopy.input.Coordinates.scale--parameters">Parameters</h5>
+
+<details class="factor-">
+  <summary>float, optional</summary>
+  <p>Factor to scale the coordinates by, by default 1.</p>
+</details>      <h5 id="simulatedmicroscopy.input.Coordinates.scale--returns">Returns</h5>
+<p>np.ndarray
+    Numpy array containing the scaled coordinates</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.GaussianPSF" class="doc doc-heading">
+        <code>GaussianPSF</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="simulatedmicroscopy.image.Image" href="#simulatedmicroscopy.Image">Image</a></code></p>
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.psf.GaussianPSF.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span> <span class="n">pixel_sizes</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-07</span><span class="p">,</span> <span class="mf">1e-08</span><span class="p">,</span> <span class="mf">1e-08</span><span class="p">])</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generate a 3D Gaussian with given sigmas to use as PSF</p>
+<h5 id="simulatedmicroscopy.psf.GaussianPSF.__init__--parameters">Parameters</h5>
+
+<details class="sigmas-">
+  <summary>list[float]</summary>
+  <p>List of sigmas (in zyx order) to use for the Gaussian distribution, given in nanometers. Please note that this is given in nanometers, while the pixel size is given in meters.</p>
+</details>
+<details class="pixel_sizes-">
+  <summary>Optional[list[float]], optional</summary>
+  <p>List of pixel sizes (in zyx order) in meters, by default [1e-7, 1e-8, 1e-8].</p>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.HuygensImage" class="doc doc-heading">
+        <code>HuygensImage</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="simulatedmicroscopy.image.Image" href="#simulatedmicroscopy.Image">Image</a></code></p>
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.HuygensImage.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Wrapper for Huygens-generated .h5 images
+Extends the <code>Image</code> class.</p>
+<h5 id="simulatedmicroscopy.image.HuygensImage.__init__--parameters">Parameters</h5>
+
+<details class="filename-">
+  <summary>str</summary>
+  <p>Name of the Huygens-generated .h5 file</p>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.HuygensPSF" class="doc doc-heading">
+        <code>HuygensPSF</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="simulatedmicroscopy.image.HuygensImage" href="#simulatedmicroscopy.HuygensImage">HuygensImage</a></code></p>
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.psf.HuygensPSF.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generate PSF from Huygens .h5 file</p>
+<h5 id="simulatedmicroscopy.psf.HuygensPSF.__init__--parameters">Parameters</h5>
+
+<details class="filename-">
+  <summary>Union[str, Path]</summary>
+  <p>Filename/path to the .h5 file</p>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.Image" class="doc doc-heading">
+        <code>Image</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.pixel_coordinates" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pixel_coordinates</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Pixel coordinates (z,y,x) where particles are positioned</p>
+  </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">pixel_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize an image, used as a wrapper to hold both an N-dimensional
+image and its pixel sizes</p>
+<h5 id="simulatedmicroscopy.image.Image.__init__--parameters">Parameters</h5>
+
+<details class="image-">
+  <summary>np.ndarray</summary>
+  <p>2D or 3D numpy array containing pixel values, order should be (z,)y,x</p>
+</details>
+<details class="pixel_sizes-">
+  <summary>list[float]</summary>
+  <p>List/array of pixel sizes in meters, same length as number of image
+ dimensions. Order: (z,)y,x. By default 1.0 m/px for all dimensions.</p>
+</details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.convolve" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">convolve</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Convolve this image with another image (a PSF). The image is overwritten by the result of the convolution.</p>
+<h5 id="simulatedmicroscopy.image.Image.convolve--parameters">Parameters</h5>
+
+<details class="other-">
+  <summary>type[Image]</summary>
+  <p>The image to convolve this image with</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.convolve--returns">Returns</h5>
+<p>type[Image]
+    The convolved image</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.create_particle_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_particle_image</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">particle</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create image in which every point from the set of coordinates is represented by a given <code>particle</code></p>
+<h5 id="simulatedmicroscopy.image.Image.create_particle_image--parameters">Parameters</h5>
+
+<details class="coordinates-">
+  <summary>type[CoordinateSet]</summary>
+  <p>Set of coordinates</p>
+</details>
+<details class="particle-">
+  <summary>list[BaseParticle]</summary>
+  <p>Particle to use for image, will also use its pixel size for the final image</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.create_particle_image--returns">Returns</h5>
+<p>type[Image]
+    Genereated image</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.create_point_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_point_image</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">pixel_sizes</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create point source image in which every point from the set of coordinates is represented by a single white pixel</p>
+<h5 id="simulatedmicroscopy.image.Image.create_point_image--parameters">Parameters</h5>
+
+<details class="coordinates-">
+  <summary>type[CoordinateSet]</summary>
+  <p>Set of coordinates</p>
+</details>
+<details class="pixel_sizes-">
+  <summary>list[float]</summary>
+  <p>List of pixel sizes in meters, in zyx order.</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.create_point_image--returns">Returns</h5>
+<p>type[Image]
+    Genereated image</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.downsample" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">downsample</span><span class="p">(</span><span class="n">downsample_factor</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Downsample the image, decrease the pixel sizes by given factors.
+Overwrites current image and pixel sizes.</p>
+<h5 id="simulatedmicroscopy.image.Image.downsample--parameters">Parameters</h5>
+
+<details class="downsample_factor-">
+  <summary>list[int]</summary>
+  <p>Factors to downsample each dimension by, in zyx order.</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.downsample--returns">Returns</h5>
+<p>type[Image]
+    Resulting image, original image and pixelsizes are also overwritten</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.get_pixel_coordinates" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_pixel_coordinates</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get list of pixel indices containing particles</p>
+<h5 id="simulatedmicroscopy.image.Image.get_pixel_coordinates--returns">Returns</h5>
+<p>np.ndarray
+    Numpy (N,3) array in zyx order with indices of pixels containing particles</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.get_pixel_sizes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_pixel_sizes</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="s1">&#39;zyx&#39;</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get pixel sizes for given dimensions in given unit</p>
+<h5 id="simulatedmicroscopy.image.Image.get_pixel_sizes--parameters">Parameters</h5>
+
+<details class="dimensions-">
+  <summary>List of str, optional</summary>
+  <p>Dimensions to get, one or more of (x, y, z), by default <code>["z","y","x"]</code></p>
+</details>
+<details class="unit-">
+  <summary>str, optional</summary>
+  <p>Unit to give the pixel size in. One of [m, cm, mm, µm, um, nm], by default "m".</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.get_pixel_sizes--returns">Returns</h5>
+<p>list[float]
+    List of pixel sizes in given unit, in order of requested dimensions.</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.load_h5file" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">load_h5file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Load data from h5 file (custom format)</p>
+<h5 id="simulatedmicroscopy.image.Image.load_h5file--parameters">Parameters</h5>
+
+<details class="filename-">
+  <summary>str</summary>
+  <p>Name of the file to load from</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.load_h5file--returns">Returns</h5>
+<p>Image
+    Resulting image with correct pixel sizes</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.noisify" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">noisify</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Add Poisson noise to the image</p>
+<h5 id="simulatedmicroscopy.image.Image.noisify--parameters">Parameters</h5>
+
+<details class="lam-">
+  <summary>float, optional</summary>
+  <p><code>lambda</code> parameter to pass onto the Poisson distribution. Expected number of events occurring in a fixed-time interval, by default 1.0</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.noisify--returns">Returns</h5>
+<p>type[Image]
+    The image with noise added</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.save_h5file" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save_h5file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Save image as h5 file (custom format, not compatible with Huygens)</p>
+<h5 id="simulatedmicroscopy.image.Image.save_h5file--parameters">Parameters</h5>
+
+<details class="filename-">
+  <summary>str</summary>
+  <p>Filename to save the file.</p>
+</details>
+<details class="description-">
+  <summary>Optional[str], optional</summary>
+  <p>Description to include in the file, by default None</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.save_h5file--returns">Returns</h5>
+<p>bool
+    Whether the saving is successfull</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.Shell" class="doc doc-heading">
+        <code>Shell</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="simulatedmicroscopy.particle.Sphere" href="#simulatedmicroscopy.Sphere">Sphere</a></code></p>
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.particle.Shell.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pixel_sizes</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">shell_thickness</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Shell with given inner radius and shell thickness. Shell has constant intensity of 1., everything else is 0.</p>
+<h5 id="simulatedmicroscopy.particle.Shell.__init__--parameters">Parameters</h5>
+
+<details class="pixel_sizes-">
+  <summary>list[float]</summary>
+  <p>List of pixel sizes in meters, zyx order</p>
+</details>
+<details class="radius-">
+  <summary>float</summary>
+  <p>Inner radius of the shell in meters, one float for all directions.</p>
+</details>
+<details class="shell_thickness-">
+  <summary>float</summary>
+  <p>Thickness of the shell in meters, one float for all directions.</p>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="simulatedmicroscopy.Sphere" class="doc doc-heading">
+        <code>Sphere</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="simulatedmicroscopy.particle.BaseParticle">BaseParticle</span></code></p>
+
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.particle.Sphere.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">pixel_sizes</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sphere with given radius with constant intensity of 1.</p>
+<h5 id="simulatedmicroscopy.particle.Sphere.__init__--parameters">Parameters</h5>
+
+<details class="pixel_sizes-">
+  <summary>list[float]</summary>
+  <p>List of pixel sizes in meters, zyx order</p>
+</details>
+<details class="radius-">
+  <summary>float</summary>
+  <p>Radius of the sphere in meters, one float for all directions.</p>
+</details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+    
+  </body>
+</html>
