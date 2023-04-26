@@ -6,6 +6,9 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,9 +27,7 @@ jobs:
       run: |
         # build docs to site dir
         mkdocs build
-    - name: Deploy to GitHub Pages
-      if: success()
-      uses: crazy-max/ghaction-github-pages@v2
+    - name: Deploy to github pages
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        target_branch: gh-pages
-        build_dir: site
+        folder: site
