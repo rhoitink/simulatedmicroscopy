@@ -2,8 +2,8 @@ import numpy as np
 
 
 def overlap_arrays(
-    a: type[np.ndarray], b: type[np.ndarray], offset: tuple = (0, 0, 0)
-) -> type[np.ndarray]:
+    a: np.ndarray, b: np.ndarray, offset: tuple = (0, 0, 0)
+) -> np.ndarray:
     """
     Make array that sums arrays a and b with given offset
 
