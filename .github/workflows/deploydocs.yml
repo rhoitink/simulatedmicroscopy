@@ -2,9 +2,8 @@ name: Deploy documentation
 
 on:
   push:
-    branches:
-      - main
-  pull_request: {}
+    tags:
+      - "v*"
 
 permissions:
   contents: write
