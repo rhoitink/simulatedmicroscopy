@@ -28,5 +28,5 @@ keywords:
   - point spread function
   - image generation
 license: MIT
-version: v0.3.0
+version: "v0.3.0"
 date-released: '2023-04-26'

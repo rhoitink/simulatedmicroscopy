@@ -20,6 +20,7 @@ setup(
             "flake8",
             "pytest",
             "pytest-cov",
+            "bump2version",
         ],
         "docs": [
             "mkdocs",
