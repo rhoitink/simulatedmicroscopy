@@ -316,7 +316,7 @@ class Image:
         type[Image]
             The convolved image
         """
-        if not (self.pixel_sizes == other.pixel_sizes).all():
+        if not np.isclose(self.pixel_sizes, other.pixel_sizes).all():
             raise ValueError("Cannot convolve images with different pixel sizes")
 
         self.image = scipy.signal.convolve(self.image, other.image, mode="same")
