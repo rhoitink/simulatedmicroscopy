@@ -12,3 +12,5 @@ htmlcov
 .vscode
 .test*
 site
+*.xyz
+*.ipynb
