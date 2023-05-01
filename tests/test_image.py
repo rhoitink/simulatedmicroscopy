@@ -205,3 +205,27 @@ def test_pixel_coordinates_after_downscale(downsample_factor):
     im.downsample([downsample_factor] * 3)
 
     assert (pixel_coords_before == im.get_pixel_coordinates() * downsample_factor).all()
+
+
+def test_pixel_coordinates_after_downscale_onlyz():
+    downsample_factor = 2
+    from simulatedmicroscopy import Coordinates
+
+    cs = Coordinates(
+        [
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [0.0, 5.0, 0.0],
+        ]
+    )
+
+    im = Image.create_point_image(cs, [100e-9, 10e-9, 10e-9])
+
+    pixel_coords_before = im.get_pixel_coordinates().copy()
+
+    im.downsample([downsample_factor, 1, 1])
+
+    assert (
+        pixel_coords_before
+        == im.get_pixel_coordinates() * np.transpose([downsample_factor, 1, 1])
+    ).all()

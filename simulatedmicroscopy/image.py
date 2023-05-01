@@ -297,8 +297,8 @@ class Image:
 
         # adapt particle coordinates
         if self.pixel_coordinates is not None:
-            self.pixel_coordinates = (
-                self.pixel_coordinates // np.array(downsample_factor)[::-1]
+            self.pixel_coordinates = self.pixel_coordinates // np.array(
+                downsample_factor
             )
 
         return self
