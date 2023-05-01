@@ -2,6 +2,8 @@ site_name: Simulated Microscopy Documentation
 
 theme:
   name: material
+  features:
+    - navigation.footer
 
 nav:
     - index.md
@@ -12,3 +14,5 @@ nav:
 plugins:
   - search
   - mkdocstrings
+
+repo_url: https://github.com/rhoitink/simulatedmicroscopy
