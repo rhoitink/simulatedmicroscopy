@@ -1,8 +1,14 @@
-from simulatedmicroscopy.particle import Sphere, Shell
+from simulatedmicroscopy.particle import Sphere, Shell, PointParticle
 from simulatedmicroscopy.image import Image
 from simulatedmicroscopy.input import Coordinates
 import pytest
 import numpy as np
+
+
+def test_can_create_particle():
+    p = PointParticle([1e-6, 1e-6, 1e-6])
+
+    assert p.response().shape == (1, 1, 1)
 
 
 @pytest.mark.parametrize(

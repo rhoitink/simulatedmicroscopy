@@ -27,7 +27,7 @@ class BaseParticle:
         np.ndarray
             Numpy array with intensity values
         """
-        return np.array([1, 1, 1], dtype=self.dtype)
+        return np.array([[[1]]], dtype=self.dtype)
 
     @property
     def shape(self) -> type[tuple]:
