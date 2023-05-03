@@ -409,7 +409,7 @@ class HuygensImage(Image):
 
         filepath = Path(filename)
         if not filepath.exists():
-            return FileExistsError("Requested file does not exist")
+            raise FileNotFoundError("Requested file does not exist")
 
         with h5py.File(filepath, "r") as f:
             image = np.squeeze(f[filepath.stem + "/ImageData/Image"][()])

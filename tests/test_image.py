@@ -1,4 +1,4 @@
-from simulatedmicroscopy import Image
+from simulatedmicroscopy import Image, HuygensImage
 import numpy as np
 import pytest
 
@@ -34,6 +34,11 @@ def test_pixel_sizes():
 
     assert (image.pixel_sizes == pixel_sizes).all()
     assert (image.get_pixel_sizes() == pixel_sizes).all()
+
+
+def test_huygens_notexisting(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        HuygensImage(tmp_path / "thisfiledoesnotexist.h5")
 
 
 @pytest.mark.parametrize(
