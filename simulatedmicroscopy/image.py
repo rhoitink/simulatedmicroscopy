@@ -16,7 +16,10 @@ class Image:
     """Pixel coordinates (z,y,x) where particles are positioned"""
 
     def __init__(
-        self, image: np.ndarray, pixel_sizes: Optional[list[float]] = None
+        self,
+        image: np.ndarray,
+        pixel_sizes: Optional[list[float]] = None,
+        metadata: Optional[dict] = None,
     ) -> None:
         """Initialize an image, used as a wrapper to hold both an N-dimensional
         image and its pixel sizes
@@ -28,6 +31,8 @@ class Image:
         pixel_sizes : list[float]
             List/array of pixel sizes in meters, same length as number of image
              dimensions. Order: (z,)y,x. By default 1.0 m/px for all dimensions.
+        metadata : dict
+            Place to store custom metadata about an image, will also be stored in .h5 file.
         """
         self.image = np.array(image)
 
@@ -41,6 +46,11 @@ class Image:
         assert (
             self.pixel_sizes.shape[0] == self._number_of_dimensions()
         ), "Not current number of pixel sizes given"
+
+        if metadata is not None and not isinstance(metadata, dict):
+            raise ValueError("Metadata should be a dict")
+
+        self.metadata = metadata
 
     def _number_of_dimensions(self) -> int:
         """Get the number of dimensions of the image
@@ -117,6 +127,10 @@ class Image:
                     [dim]
                 )[0]
 
+            if self.metadata is not None:
+                for k, v in self.metadata.items():
+                    f["Metadata"].attrs[k] = v
+
             # store pixel coordinates if available
             if self.pixel_coordinates is not None:
                 f["Metadata/PixelCoordinates"] = self.pixel_coordinates
@@ -149,7 +163,9 @@ class Image:
             else:
                 pixel_coordinates = None
 
-        im = cls(image=image, pixel_sizes=pixel_sizes)
+            metadata = dict(f["Metadata"].attrs)
+
+        im = cls(image=image, pixel_sizes=pixel_sizes, metadata=metadata)
         if pixel_coordinates is not None:
             im.pixel_coordinates = pixel_coordinates
         return im
@@ -200,7 +216,7 @@ class Image:
 
     @classmethod
     def create_point_image(
-        cls, coordinates: type[Coordinates], pixel_sizes: list[float]
+        cls, coordinates: type[Coordinates], pixel_sizes: list[float], *args, **kwargs
     ) -> type[Image]:
         """Create point source image in which every point from the set of coordinates is represented by a single white pixel
 
@@ -218,13 +234,17 @@ class Image:
         """
         (zs, ys, xs), image = cls._get_point_image_array(coordinates, pixel_sizes)
 
-        im = cls(image=image, pixel_sizes=pixel_sizes)
+        im = cls(image=image, pixel_sizes=pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs])
         return im
 
     @classmethod
     def create_particle_image(
-        cls, coordinates: type[Coordinates], particle: type[BaseParticle]
+        cls,
+        coordinates: type[Coordinates],
+        particle: type[BaseParticle],
+        *args,
+        **kwargs,
     ) -> type[Image]:
         """Create image in which every point from the set of coordinates is represented by a given `particle`
 
@@ -260,7 +280,7 @@ class Image:
         for x, y, z in zip(xs, ys, zs):
             image = overlap_arrays(image, particle_response, offset=(z, y, x))
 
-        im = cls(image=image, pixel_sizes=particle.pixel_sizes)
+        im = cls(image=image, pixel_sizes=particle.pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
         return im
 
