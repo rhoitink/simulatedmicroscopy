@@ -1,4 +1,4 @@
-from simulatedmicroscopy import Image
+from simulatedmicroscopy import Image, HuygensImage
 import numpy as np
 import pytest
 
@@ -34,6 +34,11 @@ def test_pixel_sizes():
 
     assert (image.pixel_sizes == pixel_sizes).all()
     assert (image.get_pixel_sizes() == pixel_sizes).all()
+
+
+def test_huygens_notexisting(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        HuygensImage(tmp_path / "thisfiledoesnotexist.h5")
 
 
 @pytest.mark.parametrize(
@@ -117,6 +122,9 @@ def test_downsample(downsample_factor):
     # check if the original image was also updated
     assert downsampled == im
 
+    # should be set to True
+    assert im.is_downsampled
+
 
 @pytest.mark.parametrize(
     "multiplication_factor",
@@ -133,6 +141,9 @@ def test_convolution(multiplication_factor):
     convolved = im.convolve(psf)
 
     assert im == convolved
+
+    # should be set to True
+    assert im.is_convolved
 
 
 def test_convolution_wrongpixelsize():
@@ -151,6 +162,9 @@ def test_noise():
 
     # check if original image was also changed
     assert im != create_demo_image()
+
+    # should be set to True
+    assert im.has_noise
 
 
 def test_point_image(tmp_path):
@@ -229,3 +243,49 @@ def test_pixel_coordinates_after_downscale_onlyz():
         pixel_coords_before
         == im.get_pixel_coordinates() * np.transpose([downsample_factor, 1, 1])
     ).all()
+
+
+def test_image_metadata_wrongtype():
+    with pytest.raises(ValueError):
+        Image(np.zeros(shape=(5, 5, 5)), [1e-6, 1e-6, 1e-6], metadata=[1, 2, 3])
+
+
+def test_image_metadata_is_set():
+    meta = {"key1": "val1", "key2": 2, "key3": 3.0}
+    im = Image(np.zeros(shape=(5, 5, 5)), [1e-6, 1e-6, 1e-6], metadata=meta)
+
+    assert im.metadata == meta
+
+
+def test_image_metadata_can_save_and_retrieve(tmp_path):
+    meta = {"key1": "val1", "key2": 2, "key3": 3.0}
+
+    im = Image(np.zeros(shape=(5, 5, 5)), [1e-6, 1e-6, 1e-6], metadata=meta)
+    im.save_h5file(tmp_path / "test_metadata.h5")
+
+    im2 = Image.load_h5file(tmp_path / "test_metadata.h5")
+
+    assert im2.metadata == meta
+
+
+def test_image_metadata_works_on_classmethods():
+    from simulatedmicroscopy import Coordinates, Sphere
+
+    meta = {"key1": "val1", "key2": 2, "key3": 3.0}
+
+    cs = Coordinates(
+        [
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [0.0, 5.0, 0.0],
+        ]
+    )
+
+    point_im = Image.create_point_image(cs, [1e-6, 1e-6, 1e-6], metadata=meta)
+
+    particle_im = Image.create_particle_image(
+        cs, Sphere([1e-6, 1e-6, 1e-6], 1e-6), metadata=meta
+    )
+
+    assert point_im.metadata == meta
+    assert particle_im.metadata == meta
