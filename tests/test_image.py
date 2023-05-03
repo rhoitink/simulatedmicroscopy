@@ -117,6 +117,9 @@ def test_downsample(downsample_factor):
     # check if the original image was also updated
     assert downsampled == im
 
+    # should be set to True
+    assert im.is_downsampled
+
 
 @pytest.mark.parametrize(
     "multiplication_factor",
@@ -133,6 +136,9 @@ def test_convolution(multiplication_factor):
     convolved = im.convolve(psf)
 
     assert im == convolved
+
+    # should be set to True
+    assert im.is_convolved
 
 
 def test_convolution_wrongpixelsize():
@@ -151,6 +157,9 @@ def test_noise():
 
     # check if original image was also changed
     assert im != create_demo_image()
+
+    # should be set to True
+    assert im.has_noise
 
 
 def test_point_image(tmp_path):

@@ -7,6 +7,7 @@ import scipy.signal
 from .input import Coordinates
 from .particle import BaseParticle
 from .util import overlap_arrays
+import warnings
 
 
 class Image:
@@ -14,6 +15,15 @@ class Image:
 
     pixel_coordinates = None
     """Pixel coordinates (z,y,x) where particles are positioned"""
+
+    is_convolved = False
+    """Whether the image has undergone convolution"""
+
+    is_downsampled = False
+    """Whether the image has undergone downsampling"""
+
+    has_noise = False
+    """Whether the image has undergone noise addition"""
 
     def __init__(
         self,
@@ -47,10 +57,12 @@ class Image:
             self.pixel_sizes.shape[0] == self._number_of_dimensions()
         ), "Not current number of pixel sizes given"
 
-        if metadata is not None and not isinstance(metadata, dict):
+        if metadata is None:
+            self.metadata = {}
+        elif not isinstance(metadata, dict):
             raise ValueError("Metadata should be a dict")
-
-        self.metadata = metadata
+        else:
+            self.metadata = metadata
 
     def _number_of_dimensions(self) -> int:
         """Get the number of dimensions of the image
@@ -321,6 +333,9 @@ class Image:
                 downsample_factor
             )
 
+        self.is_downsampled = True
+        self.metadata["is_downsampled"] = True
+
         return self
 
     def convolve(self, other: type[Image]) -> type[Image]:
@@ -341,6 +356,9 @@ class Image:
 
         self.image = scipy.signal.convolve(self.image, other.image, mode="same")
 
+        self.is_convolved = True
+        self.metadata["is_convolved"] = True
+
         return self
 
     def noisify(self, lam: float = 1.0) -> type[Image]:
@@ -356,8 +374,14 @@ class Image:
         type[Image]
             The image with noise added
         """
+        if self.has_noise:
+            warnings.warn("Image has already undergone noisification once")
+
         rng = np.random.default_rng()
         self.image = self.image * rng.poisson(lam, size=self.image.shape)
+
+        self.has_noise = True
+        self.metadata["has_noise"] = True
 
         return self
 
