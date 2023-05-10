@@ -13,7 +13,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.11">
     
     
       
@@ -1511,7 +1511,7 @@
       <p>Wrapper to hold set of particle coordinates</p>
 <h5 id="simulatedmicroscopy.input.Coordinates.__init__--parameters">Parameters</h5>
 
-<details class="coordinates-">
+<details class="coordinates-" open>
   <summary>list or np.ndarray</summary>
   <p>List of coordinates</p>
 </details>
@@ -1534,7 +1534,7 @@
       <p>Get the array containing the particle coordinates</p>
 <h5 id="simulatedmicroscopy.input.Coordinates.get_coordinates--parameters">Parameters</h5>
 
-<details class="unit-">
+<details class="unit-" open>
   <summary>str, optional</summary>
   <p>Unit to give the coordinates in. One of [nm, µm], by default "µm"</p>
 </details>      <h5 id="simulatedmicroscopy.input.Coordinates.get_coordinates--returns">Returns</h5>
@@ -1560,7 +1560,7 @@
       <p>Update the list of coordinates by multiplication with <code>factor</code></p>
 <h5 id="simulatedmicroscopy.input.Coordinates.scale--parameters">Parameters</h5>
 
-<details class="factor-">
+<details class="factor-" open>
   <summary>float, optional</summary>
   <p>Factor to scale the coordinates by, by default 1.</p>
 </details>      <h5 id="simulatedmicroscopy.input.Coordinates.scale--returns">Returns</h5>
@@ -1624,11 +1624,11 @@
       <p>Generate a 3D Gaussian with given sigmas to use as PSF</p>
 <h5 id="simulatedmicroscopy.psf.GaussianPSF.__init__--parameters">Parameters</h5>
 
-<details class="sigmas-">
+<details class="sigmas-" open>
   <summary>list[float]</summary>
   <p>List of sigmas (in zyx order) to use for the Gaussian distribution, given in nanometers. Please note that this is given in nanometers, while the pixel size is given in meters.</p>
 </details>
-<details class="pixel_sizes-">
+<details class="pixel_sizes-" open>
   <summary>Optional[list[float]], optional</summary>
   <p>List of pixel sizes (in zyx order) in meters, by default [1e-7, 1e-8, 1e-8].</p>
 </details>
@@ -1690,7 +1690,7 @@
 Extends the <code>Image</code> class.</p>
 <h5 id="simulatedmicroscopy.image.HuygensImage.__init__--parameters">Parameters</h5>
 
-<details class="filename-">
+<details class="filename-" open>
   <summary>str</summary>
   <p>Name of the Huygens-generated .h5 file</p>
 </details>
@@ -1751,7 +1751,7 @@ Extends the <code>Image</code> class.</p>
       <p>Generate PSF from Huygens .h5 file</p>
 <h5 id="simulatedmicroscopy.psf.HuygensPSF.__init__--parameters">Parameters</h5>
 
-<details class="filename-">
+<details class="filename-" open>
   <summary>Union[str, Path]</summary>
   <p>Filename/path to the .h5 file</p>
 </details>
@@ -1802,6 +1802,7 @@ Extends the <code>Image</code> class.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 </h3>
@@ -1823,6 +1824,7 @@ Extends the <code>Image</code> class.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 </h3>
@@ -1844,6 +1846,7 @@ Extends the <code>Image</code> class.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 </h3>
@@ -1865,6 +1868,7 @@ Extends the <code>Image</code> class.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 </h3>
@@ -1895,16 +1899,16 @@ Extends the <code>Image</code> class.</p>
 image and its pixel sizes</p>
 <h5 id="simulatedmicroscopy.image.Image.__init__--parameters">Parameters</h5>
 
-<details class="image-">
+<details class="image-" open>
   <summary>np.ndarray</summary>
   <p>2D or 3D numpy array containing pixel values, order should be (z,)y,x</p>
 </details>
-<details class="pixel_sizes-">
+<details class="pixel_sizes-" open>
   <summary>list[float]</summary>
   <p>List/array of pixel sizes in meters, same length as number of image
  dimensions. Order: (z,)y,x. By default 1.0 m/px for all dimensions.</p>
 </details>
-<details class="metadata-">
+<details class="metadata-" open>
   <summary>dict</summary>
   <p>Place to store custom metadata about an image, will also be stored in .h5 file.</p>
 </details>
@@ -1927,7 +1931,7 @@ image and its pixel sizes</p>
       <p>Convolve this image with another image (a PSF). The image is overwritten by the result of the convolution.</p>
 <h5 id="simulatedmicroscopy.image.Image.convolve--parameters">Parameters</h5>
 
-<details class="other-">
+<details class="other-" open>
   <summary>type[Image]</summary>
   <p>The image to convolve this image with</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.convolve--returns">Returns</h5>
@@ -1957,11 +1961,11 @@ image and its pixel sizes</p>
       <p>Create image in which every point from the set of coordinates is represented by a given <code>particle</code></p>
 <h5 id="simulatedmicroscopy.image.Image.create_particle_image--parameters">Parameters</h5>
 
-<details class="coordinates-">
+<details class="coordinates-" open>
   <summary>type[CoordinateSet]</summary>
   <p>Set of coordinates</p>
 </details>
-<details class="particle-">
+<details class="particle-" open>
   <summary>list[BaseParticle]</summary>
   <p>Particle to use for image, will also use its pixel size for the final image</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.create_particle_image--returns">Returns</h5>
@@ -1991,11 +1995,11 @@ image and its pixel sizes</p>
       <p>Create point source image in which every point from the set of coordinates is represented by a single white pixel</p>
 <h5 id="simulatedmicroscopy.image.Image.create_point_image--parameters">Parameters</h5>
 
-<details class="coordinates-">
+<details class="coordinates-" open>
   <summary>type[CoordinateSet]</summary>
   <p>Set of coordinates</p>
 </details>
-<details class="pixel_sizes-">
+<details class="pixel_sizes-" open>
   <summary>list[float]</summary>
   <p>List of pixel sizes in meters, in zyx order.</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.create_point_image--returns">Returns</h5>
@@ -2022,7 +2026,7 @@ image and its pixel sizes</p>
 Overwrites current image and pixel sizes.</p>
 <h5 id="simulatedmicroscopy.image.Image.downsample--parameters">Parameters</h5>
 
-<details class="downsample_factor-">
+<details class="downsample_factor-" open>
   <summary>list[int]</summary>
   <p>Factors to downsample each dimension by, in zyx order.</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.downsample--returns">Returns</h5>
@@ -2069,11 +2073,11 @@ Overwrites current image and pixel sizes.</p>
       <p>Get pixel sizes for given dimensions in given unit</p>
 <h5 id="simulatedmicroscopy.image.Image.get_pixel_sizes--parameters">Parameters</h5>
 
-<details class="dimensions-">
+<details class="dimensions-" open>
   <summary>List of str, optional</summary>
   <p>Dimensions to get, one or more of (x, y, z), by default <code>["z","y","x"]</code></p>
 </details>
-<details class="unit-">
+<details class="unit-" open>
   <summary>str, optional</summary>
   <p>Unit to give the pixel size in. One of [m, cm, mm, µm, um, nm], by default "m".</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.get_pixel_sizes--returns">Returns</h5>
@@ -2103,7 +2107,7 @@ Overwrites current image and pixel sizes.</p>
       <p>Load data from h5 file (custom format)</p>
 <h5 id="simulatedmicroscopy.image.Image.load_h5file--parameters">Parameters</h5>
 
-<details class="filename-">
+<details class="filename-" open>
   <summary>str</summary>
   <p>Name of the file to load from</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.load_h5file--returns">Returns</h5>
@@ -2129,7 +2133,7 @@ Overwrites current image and pixel sizes.</p>
       <p>Add Poisson noise to the image</p>
 <h5 id="simulatedmicroscopy.image.Image.noisify--parameters">Parameters</h5>
 
-<details class="lam-">
+<details class="lam-" open>
   <summary>float, optional</summary>
   <p><code>lambda</code> parameter to pass onto the Poisson distribution. Expected number of events occurring in a fixed-time interval, by default 1.0</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.noisify--returns">Returns</h5>
@@ -2155,11 +2159,11 @@ Overwrites current image and pixel sizes.</p>
       <p>Save image as h5 file (custom format, not compatible with Huygens)</p>
 <h5 id="simulatedmicroscopy.image.Image.save_h5file--parameters">Parameters</h5>
 
-<details class="filename-">
+<details class="filename-" open>
   <summary>str</summary>
   <p>Filename to save the file.</p>
 </details>
-<details class="description-">
+<details class="description-" open>
   <summary>Optional[str], optional</summary>
   <p>Description to include in the file, by default None</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.save_h5file--returns">Returns</h5>
@@ -2223,15 +2227,15 @@ Overwrites current image and pixel sizes.</p>
       <p>Shell with given inner radius and shell thickness. Shell has constant intensity of 1., everything else is 0.</p>
 <h5 id="simulatedmicroscopy.particle.Shell.__init__--parameters">Parameters</h5>
 
-<details class="pixel_sizes-">
+<details class="pixel_sizes-" open>
   <summary>list[float]</summary>
   <p>List of pixel sizes in meters, zyx order</p>
 </details>
-<details class="radius-">
+<details class="radius-" open>
   <summary>float</summary>
   <p>Inner radius of the shell in meters, one float for all directions.</p>
 </details>
-<details class="shell_thickness-">
+<details class="shell_thickness-" open>
   <summary>float</summary>
   <p>Thickness of the shell in meters, one float for all directions.</p>
 </details>
@@ -2292,11 +2296,11 @@ Overwrites current image and pixel sizes.</p>
       <p>Sphere with given radius with constant intensity of 1.</p>
 <h5 id="simulatedmicroscopy.particle.Sphere.__init__--parameters">Parameters</h5>
 
-<details class="pixel_sizes-">
+<details class="pixel_sizes-" open>
   <summary>list[float]</summary>
   <p>List of pixel sizes in meters, zyx order</p>
 </details>
-<details class="radius-">
+<details class="radius-" open>
   <summary>float</summary>
   <p>Radius of the sphere in meters, one float for all directions.</p>
 </details>
