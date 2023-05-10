@@ -8,6 +8,7 @@ from .input import Coordinates
 from .particle import BaseParticle
 from .util import overlap_arrays
 import warnings
+import skimage.measure
 
 
 class Image:
@@ -315,23 +316,18 @@ class Image:
         type[Image]
             Resulting image, original image and pixelsizes are also overwritten
         """
-        result = self.image
-        for dim in range(self._number_of_dimensions()):
-            result = scipy.signal.resample(
-                result, self.image.shape[dim] // downsample_factor[dim], axis=dim
-            )
+        # can only deal with integers, so round and cast to int
+        ds_fac = np.round(downsample_factor).astype(int)
 
-        self.image = result.copy()
-        del result
+        # reduce image size by taking the mean of a AxBxC (defined by downsample_factor) sized block and use that as new pixel value
+        self.image = skimage.measure.block_reduce(self.image, tuple(ds_fac), np.mean)
 
         # adapt pixel sizes
-        self.pixel_sizes = self.pixel_sizes * np.array(downsample_factor)
+        self.pixel_sizes = self.pixel_sizes * ds_fac
 
         # adapt particle coordinates
         if self.pixel_coordinates is not None:
-            self.pixel_coordinates = self.pixel_coordinates // np.array(
-                downsample_factor
-            )
+            self.pixel_coordinates = self.pixel_coordinates // ds_fac
 
         self.is_downsampled = True
         self.metadata["is_downsampled"] = True

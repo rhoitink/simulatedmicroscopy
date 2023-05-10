@@ -13,6 +13,7 @@ setup(
         "matplotlib",
         "h5py",
         "scipy",
+        "scikit-image>=0.20.0",
     ],
     extras_require={
         "dev": [

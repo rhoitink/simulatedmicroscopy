@@ -81,8 +81,6 @@ class Sphere(BaseParticle):
                 "One or more radii are smaller than the pixel size, not possible. Please choose either a smaller pixel size or bigger radius"
             )
 
-    def response(self):
-
         z0, y0, x0 = (0, 0, 0)
         zs, ys, xs = np.mgrid[
             -self.radius_px[0] : self.radius_px[0] : 1,
@@ -90,8 +88,8 @@ class Sphere(BaseParticle):
             -self.radius_px[2] : self.radius_px[2] : 1,
         ]
 
-        response = np.zeros(shape=zs.shape, dtype=self.dtype)
-        response[
+        self._response = np.zeros(shape=zs.shape, dtype=self.dtype)
+        self._response[
             (
                 (zs - z0) ** 2 / self.radius_px[0] ** 2
                 + (ys - y0) ** 2 / self.radius_px[1] ** 2
@@ -102,7 +100,9 @@ class Sphere(BaseParticle):
 
         del zs, ys, xs  # cleanup
 
-        return response
+    def response(self):
+
+        return self._response
 
 
 class Shell(Sphere):
@@ -140,7 +140,6 @@ class Shell(Sphere):
                 "One or more shell thicknesses are smaller than the pixel size, not possible. Please choose either a smaller pixel size or bigger shell thickness"
             )
 
-    def response(self):
         outer_sphere_response = super().response()
 
         z0, y0, x0 = (0, 0, 0)
@@ -160,6 +159,10 @@ class Shell(Sphere):
             < 1.0
         ] = 1
 
-        del zs, ys, xs  # cleanup
+        self._response = outer_sphere_response.copy() - inner_sphere_response.copy()
 
-        return outer_sphere_response - inner_sphere_response
+        del zs, ys, xs, outer_sphere_response, inner_sphere_response  # cleanup
+
+    def response(self):
+
+        return self._response
