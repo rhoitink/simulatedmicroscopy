@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="simulatedmicroscopy",
-    version="1.0.0",
+    version="1.1.0",
     author="Roy Hoitink",
     author_email="L.D.Hoitink@uu.nl",
     long_description=open("README.md").read(),
