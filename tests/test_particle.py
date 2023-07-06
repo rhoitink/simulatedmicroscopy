@@ -86,6 +86,20 @@ def test_particle_image_size():
     assert np.prod(im.image.shape) == 2.0 * np.prod(particle.shape)
 
 
+def test_particle_image_edge_pixel_margin():
+    diameter_um = 2.0
+    edge_pixel_margin = 10
+    particle = Sphere([1e-6, 1e-6, 1e-6], 1e-6 * diameter_um / 2.0)
+    coords = Coordinates([[0.0, 0.0, 0.0], [0.0, diameter_um, 0.0]])
+    im = Image.create_particle_image(coords, particle)
+    im2 = Image.create_particle_image(coords, particle, edge_pixel_margin)
+
+    # image shape should be padded on all sides by edge_pixel_margin
+    assert np.all(
+        np.array(im2.image.shape) == 2 * edge_pixel_margin + np.array(im.image.shape)
+    )
+
+
 @pytest.mark.parametrize(
     "dtype",
     [
