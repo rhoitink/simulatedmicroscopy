@@ -256,6 +256,7 @@ class Image:
         cls,
         coordinates: type[Coordinates],
         particle: type[BaseParticle],
+        edge_pixel_margin: int = 0,
         *args,
         **kwargs,
     ) -> type[Image]:
@@ -267,6 +268,8 @@ class Image:
             Set of coordinates
         particle : list[BaseParticle]
             Particle to use for image, will also use its pixel size for the final image
+        edge_pixel_margin : int
+            Number of extra empty pixels to apply as a margin around the edges of the image
 
         Returns
         -------
@@ -275,6 +278,7 @@ class Image:
         """
         # convert pixel sizes to micrometers for calculatation
         pixel_sizes_um = np.array(particle.pixel_sizes) * 1e6
+        edge_pixel_margin = int(edge_pixel_margin)
 
         # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
         scaled_coords = (
@@ -286,12 +290,20 @@ class Image:
         )  # offset coordinates by half the size of the box, such that the coordinate points to the middle of the particle
 
         # round to integer to create point at certain pixel
-        xs, ys, zs = np.round(scaled_coords).astype(int)
+        xs, ys, zs = np.round(scaled_coords).astype(int) + edge_pixel_margin
 
         image = np.zeros(shape=[1 for _ in particle.shape])
         particle_response = particle.response().copy()
         for x, y, z in zip(xs, ys, zs):
             image = overlap_arrays(image, particle_response, offset=(z, y, x))
+
+        if edge_pixel_margin != 0:
+            # add extra pixels at right edges if an edge pixel_margin is given
+            image = overlap_arrays(
+                image,
+                np.zeros(shape=[1 for _ in particle.shape]),
+                offset=np.array(image.shape) + edge_pixel_margin - 1,
+            )
 
         im = cls(image=image, pixel_sizes=particle.pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
