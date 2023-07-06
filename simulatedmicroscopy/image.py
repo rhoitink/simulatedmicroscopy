@@ -256,6 +256,7 @@ class Image:
         cls,
         coordinates: type[Coordinates],
         particle: type[BaseParticle],
+        pixel_sizes: type[list],
         *args,
         **kwargs,
     ) -> type[Image]:
@@ -273,28 +274,19 @@ class Image:
         type[Image]
             Genereated image
         """
-        # convert pixel sizes to micrometers for calculatation
-        pixel_sizes_um = np.array(particle.pixel_sizes) * 1e6
+        (xmin,ymin,zmin),(xmax,ymax,zmax), = coordinates.get_coordinates().min(axis=0)-particle.offset,coordinates.get_coordinates().max(axis=0)+particle.offset
 
-        # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
-        scaled_coords = (
-            coordinates.get_coordinates().T / pixel_sizes_um[::-1, np.newaxis]
-        )
+        pixel_sizes = np.array(pixel_sizes)*1e6
+        meshgrid = np.mgrid[xmin:xmax:pixel_sizes[0],ymin:ymax:pixel_sizes[1],zmin:zmax:pixel_sizes[2]]
 
-        particle_offset = (
-            np.array(particle.shape) / 2.0
-        )  # offset coordinates by half the size of the box, such that the coordinate points to the middle of the particle
+        image = np.zeros(meshgrid[0].shape)
 
-        # round to integer to create point at certain pixel
-        xs, ys, zs = np.round(scaled_coords).astype(int)
+        for c in coordinates.get_coordinates():
+            particle.apply(meshgrid = meshgrid, image = image, coordinate=c)
 
-        image = np.zeros(shape=[1 for _ in particle.shape])
-        particle_response = particle.response().copy()
-        for x, y, z in zip(xs, ys, zs):
-            image = overlap_arrays(image, particle_response, offset=(z, y, x))
 
-        im = cls(image=image, pixel_sizes=particle.pixel_sizes, *args, **kwargs)
-        im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
+        im = cls(image=image, pixel_sizes=pixel_sizes/1e6, *args, **kwargs)
+        im.pixel_coordinates = coordinates.get_coordinates()
         return im
 
     def __eq__(self, other: object) -> bool:
