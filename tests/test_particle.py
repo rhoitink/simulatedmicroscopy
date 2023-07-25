@@ -71,12 +71,12 @@ def test_spherocylinder_longer_than_wide():
     assert sc.shape[0] > sc.shape[1] and sc.shape[0] > sc.shape[2]
 
 
-def test_can_spherocylinder_to_narrow():
+def test_spherocylinder_to_narrow():
     with pytest.raises(ValueError):
         Spherocylinder([1e-6, 1e-8, 1e-8], 1e-6, 5e-6)
 
 
-def test_can_spherocylinder_to_short():
+def test_spherocylinder_to_short():
     with pytest.raises(ValueError):
         Spherocylinder([1e-6, 1e-8, 1e-8], 2e-6, 1e-6)
 
