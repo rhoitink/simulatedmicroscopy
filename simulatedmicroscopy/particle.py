@@ -18,6 +18,7 @@ class BaseParticle:
         self.pixel_sizes = np.array(pixel_sizes)
         self.num_dimensions = len(pixel_sizes)
         self.dtype = dtype
+        self._response = np.array([[[1]]], dtype=self.dtype)
 
     def response(self) -> np.ndarray:
         """Numpy array with the response of the type of particle
@@ -27,7 +28,7 @@ class BaseParticle:
         np.ndarray
             Numpy array with intensity values
         """
-        return np.array([[[1]]], dtype=self.dtype)
+        return self._response
 
     @property
     def shape(self) -> type[tuple]:
@@ -100,10 +101,6 @@ class Sphere(BaseParticle):
 
         del zs, ys, xs  # cleanup
 
-    def response(self):
-
-        return self._response
-
 
 class Shell(Sphere):
     def __init__(
@@ -163,10 +160,6 @@ class Shell(Sphere):
 
         del zs, ys, xs, outer_sphere_response, inner_sphere_response  # cleanup
 
-    def response(self):
-
-        return self._response
-
 
 class Spherocylinder(BaseParticle):
     def __init__(
@@ -225,5 +218,26 @@ class Spherocylinder(BaseParticle):
 
         del zs, ys, xs  # cleanup
 
-    def response(self):
-        return self._response
+
+class Cube(BaseParticle):
+    def __init__(self, pixel_sizes: list[float], width: float, *args, **kwargs) -> None:
+        """Generate cubic particle
+
+        Parameters
+        ----------
+        pixel_sizes : list[float]
+            List of pixel sizes in meters in zyx order.
+        width : float
+            Edge length of the cube in meters.
+        """
+        super().__init__(pixel_sizes, *args, **kwargs)
+
+        self.width = width
+        self.width_px = np.round(self.width / self.pixel_sizes).astype(int)
+
+        if np.any(self.width_px < 1):
+            raise ValueError(
+                "With in one or more dimensions to small, please increase width or decrease pixel size."
+            )
+
+        self._response = np.ones(shape=self.width_px, dtype=self.dtype)

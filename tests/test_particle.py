@@ -1,4 +1,10 @@
-from simulatedmicroscopy.particle import Sphere, Shell, PointParticle, Spherocylinder
+from simulatedmicroscopy.particle import (
+    Sphere,
+    Shell,
+    PointParticle,
+    Spherocylinder,
+    Cube,
+)
 from simulatedmicroscopy.image import Image
 from simulatedmicroscopy.input import Coordinates
 import pytest
@@ -79,6 +85,16 @@ def test_spherocylinder_to_narrow():
 def test_spherocylinder_to_short():
     with pytest.raises(ValueError):
         Spherocylinder([1e-6, 1e-8, 1e-8], 2e-6, 1e-6)
+
+
+def test_can_create_cube():
+    cube = Cube([1e-6, 1e-8, 1e-8], 2e-6)
+    assert np.sum(cube.response()) > 0.0
+
+
+def test_cube_to_small():
+    with pytest.raises(ValueError):
+        Cube([1e-6, 1e-8, 1e-8], 1e-7)
 
 
 def test_can_create_image():
