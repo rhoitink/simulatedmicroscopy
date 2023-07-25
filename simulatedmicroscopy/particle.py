@@ -18,6 +18,7 @@ class BaseParticle:
         self.pixel_sizes = np.array(pixel_sizes)
         self.num_dimensions = len(pixel_sizes)
         self.dtype = dtype
+        self._response = np.array([[[1]]], dtype=self.dtype)
 
     def response(self) -> np.ndarray:
         """Numpy array with the response of the type of particle
@@ -27,7 +28,7 @@ class BaseParticle:
         np.ndarray
             Numpy array with intensity values
         """
-        return np.array([[[1]]], dtype=self.dtype)
+        return self._response
 
     @property
     def shape(self) -> type[tuple]:
@@ -100,10 +101,6 @@ class Sphere(BaseParticle):
 
         del zs, ys, xs  # cleanup
 
-    def response(self):
-
-        return self._response
-
 
 class Shell(Sphere):
     def __init__(
@@ -163,6 +160,84 @@ class Shell(Sphere):
 
         del zs, ys, xs, outer_sphere_response, inner_sphere_response  # cleanup
 
-    def response(self):
 
-        return self._response
+class Spherocylinder(BaseParticle):
+    def __init__(
+        self, pixel_sizes: list[float], width: float, length: float, *args, **kwargs
+    ) -> None:
+        """Generation of a spherocylinder with given length and width, oriented along the z axis of the image. Note: the length is excluding the caps. No support for alternative orientation yet.
+
+        Parameters
+        ----------
+        pixel_sizes : list[float]
+            List of pixel sizes in zyx order in meters.
+        width : float
+            Width of the spherocylinder in meters
+        length : float
+            Length of the spherocylinder (excluding caps)
+        """
+        super().__init__(pixel_sizes=pixel_sizes, *args, **kwargs)
+
+        self.radius = width / 2.0
+        self.radius_px = np.round(self.radius / self.pixel_sizes).astype(int)
+
+        if np.any(self.radius_px < 1):
+            raise ValueError(
+                "One or more radii are smaller than the pixel size, not possible. Please choose either a smaller pixel size or bigger radius"
+            )
+
+        self.a = length / 2.0
+        self.a_px = np.round(self.a / self.pixel_sizes).astype(int)
+        if np.any(self.a_px < 1):
+            raise ValueError(
+                "Length is too short, please increase length or decrease pixel size."
+            )
+
+        zs, ys, xs = np.mgrid[
+            -self.a_px[0] - self.radius_px[0] : self.a_px[0] + self.radius_px[0] : 1,
+            -self.radius_px[1] : self.radius_px[1] : 1,
+            -self.radius_px[2] : self.radius_px[2] : 1,
+        ]
+
+        self._response = np.zeros(shape=zs.shape, dtype=self.dtype)
+        self._response[
+            (
+                (xs) ** 2 / self.radius_px[2] ** 2
+                + (ys) ** 2 / self.radius_px[1] ** 2
+                + 0.25
+                * (
+                    np.abs(zs - self.a_px[0])
+                    + np.abs(zs + self.a_px[0])
+                    - 2 * self.a_px[0]
+                )
+                ** 2
+                / self.radius_px[0] ** 2
+            )
+            < 1.0
+        ] = 1
+
+        del zs, ys, xs  # cleanup
+
+
+class Cube(BaseParticle):
+    def __init__(self, pixel_sizes: list[float], width: float, *args, **kwargs) -> None:
+        """Generate cubic particle
+
+        Parameters
+        ----------
+        pixel_sizes : list[float]
+            List of pixel sizes in meters in zyx order.
+        width : float
+            Edge length of the cube in meters.
+        """
+        super().__init__(pixel_sizes, *args, **kwargs)
+
+        self.width = width
+        self.width_px = np.round(self.width / self.pixel_sizes).astype(int)
+
+        if np.any(self.width_px < 1):
+            raise ValueError(
+                "With in one or more dimensions to small, please increase width or decrease pixel size."
+            )
+
+        self._response = np.ones(shape=self.width_px, dtype=self.dtype)

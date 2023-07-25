@@ -1,7 +1,7 @@
 from .input import Coordinates
 from .image import Image, HuygensImage
 from .psf import HuygensPSF, GaussianPSF
-from .particle import Sphere, Shell, PointParticle
+from .particle import Sphere, Shell, PointParticle, Spherocylinder, Cube
 
 __all__ = [
     "Coordinates",
@@ -12,6 +12,8 @@ __all__ = [
     "PointParticle",
     "Sphere",
     "Shell",
+    "Spherocylinder",
+    "Cube",
 ]
 
 __version__ = "1.2.0"
