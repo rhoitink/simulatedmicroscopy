@@ -6,7 +6,6 @@ import h5py
 import scipy.signal
 from .input import Coordinates
 from .particle import BaseParticle
-from .util import overlap_arrays
 import warnings
 import skimage.measure
 
@@ -292,18 +291,17 @@ class Image:
         # round to integer to create point at certain pixel
         xs, ys, zs = np.round(scaled_coords).astype(int) + edge_pixel_margin
 
-        image = np.zeros(shape=[1 for _ in particle.shape])
         particle_response = particle.response().copy()
-        for x, y, z in zip(xs, ys, zs):
-            image = overlap_arrays(image, particle_response, offset=(z, y, x))
+        prs = np.array(particle.shape)
 
-        if edge_pixel_margin != 0:
-            # add extra pixels at right edges if an edge pixel_margin is given
-            image = overlap_arrays(
-                image,
-                np.zeros(shape=[1 for _ in particle.shape]),
-                offset=np.array(image.shape) + edge_pixel_margin - 1,
-            )
+        image_size = np.ceil(
+            np.max([zs, ys, xs], axis=1) + prs + edge_pixel_margin
+        ).astype(int)
+
+        image = np.zeros(shape=image_size)
+
+        for x, y, z in zip(xs, ys, zs):
+            image[z : z + prs[0], y : y + prs[1], x : x + prs[2]] += particle_response
 
         im = cls(image=image, pixel_sizes=particle.pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
