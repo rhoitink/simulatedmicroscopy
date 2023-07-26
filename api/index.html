@@ -675,6 +675,33 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image" class="md-nav__link">
+    get_particle_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_particle_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#simulatedmicroscopy.image.Image.get_pixel_coordinates" class="md-nav__link">
     get_pixel_coordinates()
   </a>
@@ -1320,6 +1347,33 @@
         
           <li class="md-nav__item">
   <a href="#simulatedmicroscopy.image.Image.downsample--returns" class="md-nav__link">
+    Returns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image" class="md-nav__link">
+    get_particle_image()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_particle_image()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image--parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulatedmicroscopy.image.Image.get_particle_image--returns" class="md-nav__link">
     Returns
   </a>
   
@@ -2239,6 +2293,37 @@ Overwrites current image and pixel sizes.</p>
 </details>      <h5 id="simulatedmicroscopy.image.Image.downsample--returns">Returns</h5>
 <p>type[Image]
     Resulting image, original image and pixelsizes are also overwritten</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="simulatedmicroscopy.image.Image.get_particle_image" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_particle_image</span><span class="p">(</span><span class="n">particle_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">box_size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get 3D box around the coordinates of particle with index <code>particle_id</code></p>
+<h5 id="simulatedmicroscopy.image.Image.get_particle_image--parameters">Parameters</h5>
+
+<details class="particle_id-" open>
+  <summary>int, optional</summary>
+  <p>Index of the particle, by default 0</p>
+</details>
+<details class="box_size-" open>
+  <summary>Tuple[int], optional</summary>
+  <p>Size of the surrounding box in pixels, by default (5, 5, 5)</p>
+</details>      <h5 id="simulatedmicroscopy.image.Image.get_particle_image--returns">Returns</h5>
+<p>np.ndarray
+    Image containing the particle with shape determined by <code>box_size</code>. Box will be clipped to the the limits of the images and can therefore be smaller than <code>box_size</code>.</p>
 
   </div>
 
