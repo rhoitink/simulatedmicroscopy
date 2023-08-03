@@ -10,7 +10,6 @@ nav:
     - installation.md
     - data-generation-example.md
     - api.md
-    - particle-types.md
 
 plugins:
   - search
