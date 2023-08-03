@@ -1,6 +1,6 @@
 from __future__ import annotations
 import numpy as np
-from typing import Optional, Union
+from typing import Optional, Union, Tuple
 from pathlib import Path
 import h5py
 import scipy.signal
@@ -400,6 +400,41 @@ class Image:
             Numpy (N,3) array in zyx order with indices of pixels containing particles
         """
         return self.pixel_coordinates
+
+    def get_particle_image(
+        self, particle_id: int = 0, box_size: Tuple[int] = (5, 5, 5)
+    ) -> np.ndarray:
+        """Get 3D box around the coordinates of particle with index `particle_id`
+
+        Parameters
+        ----------
+        particle_id : int, optional
+            Index of the particle, by default 0
+        box_size : Tuple[int], optional
+            Size of the surrounding box in pixels, by default (5, 5, 5)
+
+        Returns
+        -------
+        np.ndarray
+            Image containing the particle with shape determined by `box_size`. Box will be clipped to the the limits of the images and can therefore be smaller than `box_size`.
+        """
+        if self.pixel_coordinates is None:
+            raise ValueError(
+                "Not a image genereted from particle, cannot extract single particles"
+            )
+
+        if int(particle_id) < 0 or int(particle_id) >= len(self.pixel_coordinates):
+            raise IndexError("Invalid particle index")
+
+        coords = self.pixel_coordinates[int(particle_id)].astype(int)
+        slices = []
+        for dim in range(len(self.image.shape)):
+            # check whether the indices will not go outside the image, else clip them back to the image boundaries (will result in smaller box)
+            left = max(0, coords[dim] - box_size[dim] // 2)
+            right = min(self.image.shape[dim], left + box_size[dim])
+            slices.append(slice(left, right, 1))
+
+        return self.image[tuple(slices)]
 
 
 class HuygensImage(Image):

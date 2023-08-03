@@ -289,3 +289,45 @@ def test_image_metadata_works_on_classmethods():
 
     assert point_im.metadata == meta
     assert particle_im.metadata == meta
+
+
+def test_particle_image_desired_shape():
+    from simulatedmicroscopy import Coordinates, Sphere
+
+    cs = Coordinates(
+        [
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [2.5, 2.5, 2.5],
+            [0.0, 5.0, 0.0],
+        ]
+    )
+
+    particle_im = Image.create_particle_image(cs, Sphere([1e-6, 1e-6, 1e-6], 1e-6))
+
+    box_shape = (2, 2, 2)
+
+    assert particle_im.get_particle_image(2, box_shape).shape == box_shape
+
+
+def test_particle_image_invalid_index():
+    from simulatedmicroscopy import Coordinates, Sphere
+
+    cs = Coordinates(
+        [
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [0.0, 5.0, 0.0],
+        ]
+    )
+    pi = Image.create_particle_image(cs, Sphere([1e-6, 1e-6, 1e-6], 1e-6))
+
+    with pytest.raises(IndexError):
+        pi.get_particle_image(-1)
+        pi.get_particle_image(len(cs.coordinates))
+        pi.get_particle_image(len(cs.coordinates) + 1)
+
+
+def test_particle_image_invalid_image():
+    with pytest.raises(ValueError):
+        Image(np.zeros((3, 3, 3))).get_particle_image()
