@@ -1,4 +1,4 @@
-# Example usage
+# Example data generation workflow
 
 The generation of a simulated microscopy image consists of several steps:
 
@@ -56,7 +56,7 @@ coords = Coordinates(
 )
 
 # create a spherical particle (radius = 100 nm) that will be placed at the coordinates
-# other options are a PointParticle and Shell, see `simulatedmicroscopy.particle` for more info
+# other options are listed in `simulatedmicroscopy.particle`
 particle = Sphere(ps.get_pixel_sizes(), radius = 100e-9)
 
 # create image by placing this particle at set coordinates
@@ -89,9 +89,9 @@ You convolved image is now saved in the `image` variable.
 Adding Poisson noise and downsampling the image to a lower pixel size is included as well and can be done as follows:
 
 ```python
-# add Poisson noise
+# add Poisson noise with λ = 50
 # downsample by a factor 2 in z and factor 3 in xy
-image.noisify().downsample([2, 3, 3])
+image.noisify(50).downsample([2, 3, 3])
 ```
 
 The downsampling by a factor two along a dimension, means that the number of pixels along that dimension is divided by two, which leads to an increase of the pixel size by a factor or two.

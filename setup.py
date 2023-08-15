@@ -27,6 +27,8 @@ setup(
             "mkdocs",
             "mkdocs-material",
             "mkdocstrings[python]",
+            "mkdocs-gen-files",
+            "mkdocs-literate-nav",
         ]
     },
 )
