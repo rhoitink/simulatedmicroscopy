@@ -15,11 +15,11 @@
         <link rel="next" href="../api/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
-        <title>Example usage - Simulated Microscopy Documentation</title>
+        <title>Example data generation workflow - Simulated Microscopy Documentation</title>
       
     
     
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#example-usage" class="md-skip">
+        <a href="#example-data-generation-workflow" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Example usage
+              Example data generation workflow
             
           </span>
         </div>
@@ -248,12 +248,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Example usage
+          Example data generation workflow
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Example usage
+        Example data generation workflow
       </a>
       
         
@@ -462,7 +462,7 @@
   
 
 
-<h1 id="example-usage">Example usage</h1>
+<h1 id="example-data-generation-workflow">Example data generation workflow</h1>
 <p>The generation of a simulated microscopy image consists of several steps:</p>
 <ol>
 <li>Generation/loading of a point spread function (PSF)</li>
@@ -505,7 +505,7 @@
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">)</span>
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1"># create a spherical particle (radius = 100 nm) that will be placed at the coordinates</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># other options are a PointParticle and Shell, see `simulatedmicroscopy.particle` for more info</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># other options are listed in `simulatedmicroscopy.particle`</span>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="n">particle</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">get_pixel_sizes</span><span class="p">(),</span> <span class="n">radius</span> <span class="o">=</span> <span class="mf">100e-9</span><span class="p">)</span>
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
 </span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="c1"># create image by placing this particle at set coordinates</span>
@@ -524,9 +524,9 @@
 <p>You convolved image is now saved in the <code>image</code> variable.</p>
 <h2 id="4-optional-adding-noise-and-downsampling-the-image">4. Optional: adding noise and downsampling the image</h2>
 <p>Adding Poisson noise and downsampling the image to a lower pixel size is included as well and can be done as follows:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># add Poisson noise</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># add Poisson noise with λ = 50</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># downsample by a factor 2 in z and factor 3 in xy</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">image</span><span class="o">.</span><span class="n">noisify</span><span class="p">()</span><span class="o">.</span><span class="n">downsample</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">image</span><span class="o">.</span><span class="n">noisify</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">downsample</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </span></code></pre></div>
 <p>The downsampling by a factor two along a dimension, means that the number of pixels along that dimension is divided by two, which leads to an increase of the pixel size by a factor or two.</p>
 <h2 id="saving-your-image">Saving your image</h2>
