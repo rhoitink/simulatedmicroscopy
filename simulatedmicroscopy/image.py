@@ -1,6 +1,6 @@
 from __future__ import annotations
 import numpy as np
-from typing import Optional, Union, Tuple
+from typing import Optional, Union, Tuple, List
 from pathlib import Path
 import h5py
 import scipy.signal
@@ -255,7 +255,7 @@ class Image:
         cls,
         coordinates: type[Coordinates],
         particle: type[BaseParticle],
-        edge_pixel_margin: int = 0,
+        edge_pixel_margin: Union[int, List[int]] = 0,
         *args,
         **kwargs,
     ) -> type[Image]:
@@ -267,8 +267,9 @@ class Image:
             Set of coordinates
         particle : list[BaseParticle]
             Particle to use for image, will also use its pixel size for the final image
-        edge_pixel_margin : int
-            Number of extra empty pixels to apply as a margin around the edges of the image
+        edge_pixel_margin : Union[int,List[int]]
+            Number of extra empty pixels to apply as a margin around the edges of the image. Either single int for all directions or one int for
+            every dimension (in z,y,x order).
 
         Returns
         -------
@@ -277,7 +278,17 @@ class Image:
         """
         # convert pixel sizes to micrometers for calculatation
         pixel_sizes_um = np.array(particle.pixel_sizes) * 1e6
-        edge_pixel_margin = int(edge_pixel_margin)
+        if isinstance(edge_pixel_margin, int) or isinstance(edge_pixel_margin, float):
+            # not iterable, repeat for all dims
+            edge_pixel_margin = np.array(
+                [edge_pixel_margin] * len(pixel_sizes_um), dtype=int
+            )
+        else:
+            if len(edge_pixel_margin) != len(pixel_sizes_um):
+                raise ValueError(
+                    f"Length of edge_pixel_margin not suitable, please make sure you pass {len(pixel_sizes_um)} or 1 integers"
+                )
+            edge_pixel_margin = np.array(edge_pixel_margin, dtype=int)
 
         # scale coordinates with pixel size, order of coords is xyz, while pixel size order is zyx
         scaled_coords = (
@@ -289,7 +300,10 @@ class Image:
         )  # offset coordinates by half the size of the box, such that the coordinate points to the middle of the particle
 
         # round to integer to create point at certain pixel
-        xs, ys, zs = np.round(scaled_coords).astype(int) + edge_pixel_margin
+        xs, ys, zs = (
+            np.round(scaled_coords).astype(int) + edge_pixel_margin[::-1, np.newaxis]
+        )
+        # edge_pixel_margin to x,y,z order by reversing
 
         particle_response = particle.response().copy()
         prs = np.array(particle.shape)
