@@ -54,9 +54,7 @@ class GaussianPSF(Image):
         mu = [0.0] * 3
 
         # generate Gaussian with given mu and sigmas
-        gauss_psf = scipy.stats.multivariate_normal.pdf(
-            zyx, mu, np.diag(sigmas_nm**2)
-        )
+        gauss_psf = scipy.stats.multivariate_normal.pdf(zyx, mu, np.diag(sigmas_nm**2))
 
         # reshape to 3D image
         gauss_psf = gauss_psf.reshape(z.shape)
