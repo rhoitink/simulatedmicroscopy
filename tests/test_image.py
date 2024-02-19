@@ -154,18 +154,34 @@ def test_convolution_wrongpixelsize():
         im.convolve(psf)
 
 
-def test_noise():
+def test_noise_deprecated():
+    with pytest.raises(DeprecationWarning):
+        im = create_demo_image()
+        im.noisify()
+
+def test_shot_noise():
     im = create_demo_image()
 
     # check if returns correct image
-    assert im.noisify() != create_demo_image()
+    assert im.add_shot_noise(SNR = 10.0) != create_demo_image()
 
     # check if original image was also changed
     assert im != create_demo_image()
 
     # should be set to True
-    assert im.has_noise
+    assert im.has_shot_noise
 
+def test_read_noise():
+    im = create_demo_image()
+
+    # check if returns correct image
+    assert im.add_read_noise(SNR = 10.0, background = 1e-3) != create_demo_image()
+
+    # check if original image was also changed
+    assert im != create_demo_image()
+
+    # should be set to True
+    assert im.has_read_noise
 
 def test_point_image(tmp_path):
     from simulatedmicroscopy import Coordinates

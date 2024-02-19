@@ -14,3 +14,4 @@ htmlcov
 site
 *.xyz
 *.ipynb
+src/simulatedmicroscopy/_version.py

@@ -22,8 +22,11 @@ class Image:
     is_downsampled = False
     """Whether the image has undergone downsampling"""
 
-    has_noise = False
-    """Whether the image has undergone noise addition"""
+    has_shot_noise = False
+    """Whether the image has undergone shot noise addition"""
+
+    has_read_noise = False
+    """Whether the image has undergone read noise addition"""
 
     def __init__(
         self,
@@ -382,7 +385,7 @@ class Image:
         return self
 
     def noisify(self, lam: float = 1.0) -> type[Image]:
-        """Add Poisson noise to the image
+        """Add Poisson noise to the image [DEPRECATED]
 
         Parameters
         ----------
@@ -394,14 +397,77 @@ class Image:
         type[Image]
             The image with noise added
         """
-        if self.has_noise:
-            warnings.warn("Image has already undergone noisification once")
+        raise DeprecationWarning(
+            "This method is deprecated, please use either add_shot_noise or add_read_noise"
+        )
 
-        rng = np.random.default_rng()
-        self.image = self.image * rng.poisson(lam, size=self.image.shape)
+    def add_shot_noise(self, SNR: float = 30.0) -> type[Image]:
+        """Add shot noise to the image, realised by sampling the intensities of the image from a Poisson distribution.
+        At each pixel, the current value (after rescaling) dictates the mean value of the Poisson distribution, yielding
+        signal-dependent noise.
 
-        self.has_noise = True
-        self.metadata["has_noise"] = True
+        Parameters
+        ----------
+        SNR : float, optional
+            The signal-to-noise ratio of the resulting image, by default 30.0.
+
+        Returns
+        -------
+        type[Image]
+            The image with shot noise
+        """
+        if self.has_shot_noise:
+            warnings.warn("This image already has shot noise, proceeding anyway")
+
+        # Poisson cannot deal with negative values, if these are present, shift whole image
+        if np.any(self.image < 0.0): 
+            self.image += np.abs(self.image.min())
+
+        scaling_factor = (
+            SNR**2 / self.image.mean()
+        )  # scaling factor to get a proper Poisson sampling
+
+        self.image = (
+            np.random.poisson(scaling_factor * self.image.mean()) / scaling_factor
+        )
+        # division by `scaling_factor` at the end to revert pixel values back to their (roughly) original range
+
+        self.has_shot_noise = True  # set shot noise flag
+
+        return self
+
+    def add_read_noise(self, SNR: float = 50.0, background: float = 0.0) -> type[Image]:
+        """Add read noise to the image, realised by adding noise sampled from a normal distribution. The standard deviation
+        of the distribution is constant across the entire image and determined by the SNR parameter, it is therefore
+        signal-independent.
+
+        Parameters
+        ----------
+        SNR : float, optional
+            The signal-to-noise ratio of the resulting image, by default 50.0
+        background : float, optional
+            Optional offset of the background, this will be the mean of the normal distribution, by default 0.0
+
+        Returns
+        -------
+        type[Image]
+            The image with read noise
+        """
+        if self.has_read_noise:
+            warnings.warn("This image already has read noise, proceeding anyway")
+
+        peak = np.percentile(
+            self.image, 99.9
+        )  # get peak intensity at the 99.9 percentile
+
+        # As SNR = peak / sigma; this yields that sigma = peak/SNR
+        sigma = peak / SNR
+
+        self.image += np.random.normal(
+            loc=background, scale=sigma
+        )  # centred around value of `background`
+
+        self.has_read_noise = True  # set read noise flag
 
         return self
 
