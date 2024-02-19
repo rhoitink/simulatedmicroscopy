@@ -98,7 +98,7 @@ class Image:
             List of pixel sizes in given unit, in order of requested dimensions.
         """
         if dimensions is None:
-            dimensions = ["zyx"]
+            dimensions = ["z", "y", "x"]
 
         if self._number_of_dimensions() < 3 and "z" in dimensions:
             raise ValueError("Cannot retrieve z dimension for non 3D image")
