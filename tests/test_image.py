@@ -1,6 +1,6 @@
-from simulatedmicroscopy import Image, HuygensImage
 import numpy as np
 import pytest
+from simulatedmicroscopy import HuygensImage, Image
 
 
 def create_demo_image():
@@ -56,7 +56,9 @@ def test_huygens_notexisting(tmp_path):
 def test_pixel_size_conversion(unit, conversionfactor):
     pixel_sizes = np.array([1e-9, 1e-8, 1e-7])
     image = Image(np.zeros(shape=(5, 5, 5)), pixel_sizes)
-    assert (image.get_pixel_sizes(unit=unit) == pixel_sizes * conversionfactor).all()
+    assert (
+        image.get_pixel_sizes(unit=unit) == pixel_sizes * conversionfactor
+    ).all()
 
 
 def test_image_equality_image():
@@ -113,7 +115,8 @@ def test_downsample(downsample_factor):
 
     # check if the shape of the image has decreased by `downsample_factor`
     assert (
-        downsampled.image.shape == np.array(im_array.shape) // downsample_factor
+        downsampled.image.shape
+        == np.array(im_array.shape) // downsample_factor
     ).all()
 
     # check if the pixel_size of the image has increased by `downsample_factor`
@@ -159,11 +162,12 @@ def test_noise_deprecated():
         im = create_demo_image()
         im.noisify()
 
+
 def test_shot_noise():
     im = create_demo_image()
 
     # check if returns correct image
-    assert im.add_shot_noise(SNR = 10.0) != create_demo_image()
+    assert im.add_shot_noise(SNR=10.0) != create_demo_image()
 
     # check if original image was also changed
     assert im != create_demo_image()
@@ -171,17 +175,29 @@ def test_shot_noise():
     # should be set to True
     assert im.has_shot_noise
 
+
 def test_read_noise():
     im = create_demo_image()
 
     # check if returns correct image
-    assert im.add_read_noise(SNR = 10.0, background = 1e-3) != create_demo_image()
+    assert im.add_read_noise(SNR=10.0, background=1e-3) != create_demo_image()
 
     # check if original image was also changed
     assert im != create_demo_image()
 
     # should be set to True
     assert im.has_read_noise
+
+
+def test_noise_apply_both():
+    im = create_demo_image()
+
+    assert im.add_read_noise().add_shot_noise() != create_demo_image()
+
+    assert im.has_read_noise
+
+    assert im.has_shot_noise
+
 
 def test_point_image(tmp_path):
     from simulatedmicroscopy import Coordinates
@@ -234,7 +250,9 @@ def test_pixel_coordinates_after_downscale(downsample_factor):
 
     im.downsample([downsample_factor] * 3)
 
-    assert (pixel_coords_before == im.get_pixel_coordinates() * downsample_factor).all()
+    assert (
+        pixel_coords_before == im.get_pixel_coordinates() * downsample_factor
+    ).all()
 
 
 def test_pixel_coordinates_after_downscale_onlyz():
@@ -263,7 +281,9 @@ def test_pixel_coordinates_after_downscale_onlyz():
 
 def test_image_metadata_wrongtype():
     with pytest.raises(ValueError):
-        Image(np.zeros(shape=(5, 5, 5)), [1e-6, 1e-6, 1e-6], metadata=[1, 2, 3])
+        Image(
+            np.zeros(shape=(5, 5, 5)), [1e-6, 1e-6, 1e-6], metadata=[1, 2, 3]
+        )
 
 
 def test_image_metadata_is_set():
@@ -319,7 +339,9 @@ def test_particle_image_desired_shape():
         ]
     )
 
-    particle_im = Image.create_particle_image(cs, Sphere([1e-6, 1e-6, 1e-6], 1e-6))
+    particle_im = Image.create_particle_image(
+        cs, Sphere([1e-6, 1e-6, 1e-6], 1e-6)
+    )
 
     box_shape = (2, 2, 2)
 
