@@ -1,13 +1,16 @@
 from __future__ import annotations
-import numpy as np
-from typing import Optional, Union, Tuple, List
+
+import warnings
 from pathlib import Path
+from typing import Optional
+
 import h5py
+import numpy as np
 import scipy.signal
+import skimage.measure
+
 from .input import Coordinates
 from .particle import BaseParticle
-import warnings
-import skimage.measure
 
 
 class Image:
@@ -78,7 +81,7 @@ class Image:
         return len(self.image.shape)
 
     def get_pixel_sizes(
-        self, dimensions: Optional[list[str]] = list("zyx"), unit: str = "m"
+        self, dimensions: Optional[list[str]] = None, unit: str = "m"
     ) -> list[float]:
         """Get pixel sizes for given dimensions in given unit
 
@@ -94,6 +97,9 @@ class Image:
         list[float]
             List of pixel sizes in given unit, in order of requested dimensions.
         """
+        if dimensions is None:
+            dimensions = ["zyx"]
+
         if self._number_of_dimensions() < 3 and "z" in dimensions:
             raise ValueError("Cannot retrieve z dimension for non 3D image")
 
@@ -114,7 +120,9 @@ class Image:
 
         return ps
 
-    def save_h5file(self, filename: str, description: Optional[str] = None) -> bool:
+    def save_h5file(
+        self, filename: str, description: Optional[str] = None
+    ) -> bool:
         """Save image as h5 file (custom format, not compatible with Huygens)
 
         Parameters
@@ -138,9 +146,9 @@ class Image:
 
             f.create_group("Metadata")
             for dim in self.DIMENSIONS_ORDER:
-                f[f"Metadata/DimensionScale{dim.upper()}"] = self.get_pixel_sizes(
-                    [dim]
-                )[0]
+                f[
+                    f"Metadata/DimensionScale{dim.upper()}"
+                ] = self.get_pixel_sizes([dim])[0]
 
             if self.metadata is not None:
                 for k, v in self.metadata.items():
@@ -173,7 +181,7 @@ class Image:
                 float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
                 for dim in list("zyx")
             ]
-            if "PixelCoordinates" in f["Metadata"].keys():
+            if "PixelCoordinates" in f["Metadata"]:
                 pixel_coordinates = f["Metadata/PixelCoordinates"][()]
             else:
                 pixel_coordinates = None
@@ -231,7 +239,11 @@ class Image:
 
     @classmethod
     def create_point_image(
-        cls, coordinates: type[Coordinates], pixel_sizes: list[float], *args, **kwargs
+        cls,
+        coordinates: type[Coordinates],
+        pixel_sizes: list[float],
+        *args,
+        **kwargs,
     ) -> type[Image]:
         """Create point source image in which every point from the set of coordinates is represented by a single white pixel
 
@@ -247,9 +259,11 @@ class Image:
         type[Image]
             Genereated image
         """
-        (zs, ys, xs), image = cls._get_point_image_array(coordinates, pixel_sizes)
+        (zs, ys, xs), image = cls._get_point_image_array(
+            coordinates, pixel_sizes
+        )
 
-        im = cls(image=image, pixel_sizes=pixel_sizes, *args, **kwargs)
+        im = cls(image, pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs])
         return im
 
@@ -258,7 +272,7 @@ class Image:
         cls,
         coordinates: type[Coordinates],
         particle: type[BaseParticle],
-        edge_pixel_margin: Union[int, List[int]] = 0,
+        edge_pixel_margin: int | list[int] = 0,
         *args,
         **kwargs,
     ) -> type[Image]:
@@ -270,7 +284,7 @@ class Image:
             Set of coordinates
         particle : list[BaseParticle]
             Particle to use for image, will also use its pixel size for the final image
-        edge_pixel_margin : Union[int,List[int]]
+        edge_pixel_margin : Union[int,list[int]]
             Number of extra empty pixels to apply as a margin around the edges of the image. Either single int for all directions or one int for
             every dimension (in z,y,x order).
 
@@ -281,7 +295,7 @@ class Image:
         """
         # convert pixel sizes to micrometers for calculatation
         pixel_sizes_um = np.array(particle.pixel_sizes) * 1e6
-        if isinstance(edge_pixel_margin, int) or isinstance(edge_pixel_margin, float):
+        if isinstance(edge_pixel_margin, (int, float)):
             # not iterable, repeat for all dims
             edge_pixel_margin = np.array(
                 [edge_pixel_margin] * len(pixel_sizes_um), dtype=int
@@ -304,7 +318,8 @@ class Image:
 
         # round to integer to create point at certain pixel
         xs, ys, zs = (
-            np.round(scaled_coords).astype(int) + edge_pixel_margin[::-1, np.newaxis]
+            np.round(scaled_coords).astype(int)
+            + edge_pixel_margin[::-1, np.newaxis]
         )
         # edge_pixel_margin to x,y,z order by reversing
 
@@ -318,9 +333,11 @@ class Image:
         image = np.zeros(shape=image_size)
 
         for x, y, z in zip(xs, ys, zs):
-            image[z : z + prs[0], y : y + prs[1], x : x + prs[2]] += particle_response
+            image[
+                z : z + prs[0], y : y + prs[1], x : x + prs[2]
+            ] += particle_response
 
-        im = cls(image=image, pixel_sizes=particle.pixel_sizes, *args, **kwargs)
+        im = cls(image, particle.pixel_sizes, *args, **kwargs)
         im.pixel_coordinates = np.transpose([zs, ys, xs]) + particle_offset.T
         return im
 
@@ -347,7 +364,9 @@ class Image:
         ds_fac = np.round(downsample_factor).astype(int)
 
         # reduce image size by taking the mean of a AxBxC (defined by downsample_factor) sized block and use that as new pixel value
-        self.image = skimage.measure.block_reduce(self.image, tuple(ds_fac), np.mean)
+        self.image = skimage.measure.block_reduce(
+            self.image, tuple(ds_fac), np.mean
+        )
 
         # adapt pixel sizes
         self.pixel_sizes = self.pixel_sizes * ds_fac
@@ -375,9 +394,13 @@ class Image:
             The convolved image
         """
         if not np.isclose(self.pixel_sizes, other.pixel_sizes).all():
-            raise ValueError("Cannot convolve images with different pixel sizes")
+            raise ValueError(
+                "Cannot convolve images with different pixel sizes"
+            )
 
-        self.image = scipy.signal.convolve(self.image, other.image, mode="same")
+        self.image = scipy.signal.convolve(
+            self.image, other.image, mode="same"
+        )
 
         self.is_convolved = True
         self.metadata["is_convolved"] = True
@@ -417,10 +440,13 @@ class Image:
             The image with shot noise
         """
         if self.has_shot_noise:
-            warnings.warn("This image already has shot noise, proceeding anyway")
+            warnings.warn(
+                "This image already has shot noise, proceeding anyway",
+                stacklevel=2,
+            )
 
         # Poisson cannot deal with negative values, if these are present, shift whole image
-        if np.any(self.image < 0.0): 
+        if np.any(self.image < 0.0):
             self.image += np.abs(self.image.min())
 
         scaling_factor = (
@@ -428,7 +454,7 @@ class Image:
         )  # scaling factor to get a proper Poisson sampling
 
         self.image = (
-            np.random.poisson(scaling_factor * self.image.mean()) / scaling_factor
+            np.random.poisson(scaling_factor * self.image) / scaling_factor
         )
         # division by `scaling_factor` at the end to revert pixel values back to their (roughly) original range
 
@@ -436,7 +462,9 @@ class Image:
 
         return self
 
-    def add_read_noise(self, SNR: float = 50.0, background: float = 0.0) -> type[Image]:
+    def add_read_noise(
+        self, SNR: float = 50.0, background: float = 0.0
+    ) -> type[Image]:
         """Add read noise to the image, realised by adding noise sampled from a normal distribution. The standard deviation
         of the distribution is constant across the entire image and determined by the SNR parameter, it is therefore
         signal-independent.
@@ -454,7 +482,10 @@ class Image:
             The image with read noise
         """
         if self.has_read_noise:
-            warnings.warn("This image already has read noise, proceeding anyway")
+            warnings.warn(
+                "This image already has read noise, proceeding anyway",
+                stacklevel=2,
+            )
 
         peak = np.percentile(
             self.image, 99.9
@@ -464,7 +495,7 @@ class Image:
         sigma = peak / SNR
 
         self.image += np.random.normal(
-            loc=background, scale=sigma
+            loc=background, scale=sigma, size=self.image.shape
         )  # centred around value of `background`
 
         self.has_read_noise = True  # set read noise flag
@@ -482,7 +513,7 @@ class Image:
         return self.pixel_coordinates
 
     def get_particle_image(
-        self, particle_id: int = 0, box_size: Tuple[int] = (5, 5, 5)
+        self, particle_id: int = 0, box_size: tuple[int] = (5, 5, 5)
     ) -> np.ndarray:
         """Get 3D box around the coordinates of particle with index `particle_id`
 
@@ -490,7 +521,7 @@ class Image:
         ----------
         particle_id : int, optional
             Index of the particle, by default 0
-        box_size : Tuple[int], optional
+        box_size : tuple[int], optional
             Size of the surrounding box in pixels, by default (5, 5, 5)
 
         Returns
@@ -503,7 +534,9 @@ class Image:
                 "Not a image genereted from particle, cannot extract single particles"
             )
 
-        if int(particle_id) < 0 or int(particle_id) >= len(self.pixel_coordinates):
+        if int(particle_id) < 0 or int(particle_id) >= len(
+            self.pixel_coordinates
+        ):
             raise IndexError("Invalid particle index")
 
         coords = self.pixel_coordinates[int(particle_id)].astype(int)
@@ -518,7 +551,7 @@ class Image:
 
 
 class HuygensImage(Image):
-    def __init__(self, filename: Union[str, Path]) -> None:
+    def __init__(self, filename: str | Path) -> None:
         """Wrapper for Huygens-generated .h5 images
         Extends the `Image` class.
 

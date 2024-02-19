@@ -28,6 +28,7 @@ select = [
 ignore = [
     "E501",
     "E203",
+    "UP007",
 ]
 
 exclude = [
