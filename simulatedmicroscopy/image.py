@@ -419,6 +419,10 @@ class Image:
         if self.has_shot_noise:
             warnings.warn("This image already has shot noise, proceeding anyway")
 
+        # Poisson cannot deal with negative values, if these are present, shift whole image
+        if np.any(self.image < 0.0): 
+            self.image += np.abs(self.image.min())
+
         scaling_factor = (
             SNR**2 / self.image.mean()
         )  # scaling factor to get a proper Poisson sampling
@@ -426,7 +430,7 @@ class Image:
         self.image = (
             np.random.poisson(scaling_factor * self.image.mean()) / scaling_factor
         )
-        # division by `scaling_factor` to revert pixel values back to their (roughly) original range
+        # division by `scaling_factor` at the end to revert pixel values back to their (roughly) original range
 
         self.has_shot_noise = True  # set shot noise flag
 

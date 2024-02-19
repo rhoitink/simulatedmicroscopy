@@ -86,12 +86,13 @@ You convolved image is now saved in the `image` variable.
 
 ## 4. Optional: adding noise and downsampling the image
 
-Adding Poisson noise and downsampling the image to a lower pixel size is included as well and can be done as follows:
+Adding noise and downsampling the image to a lower pixel size is included as well and can be done as follows:
 
 ```python
-# add Poisson noise with λ = 50
 # downsample by a factor 2 in z and factor 3 in xy
-image.noisify(50).downsample([2, 3, 3])
+# add Poisson noise (shot noise) with a signal-to-noise ratio of 30
+# add Gaussian noise (read noise, additive) with a mean value of 1e-5 and a signal-to-noise ratio of 50
+image.downsample([2, 3, 3]).add_shot_noise(SNR = 30.0).add_read_noise(SNR = 50.0, background = 1e-5)
 ```
 
 The downsampling by a factor two along a dimension, means that the number of pixels along that dimension is divided by two, which leads to an increase of the pixel size by a factor or two.
