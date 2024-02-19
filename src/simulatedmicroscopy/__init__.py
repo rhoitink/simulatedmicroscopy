@@ -1,7 +1,8 @@
+from .image import HuygensImage, Image
 from .input import Coordinates
-from .image import Image, HuygensImage
-from .psf import HuygensPSF, GaussianPSF
-from .particle import Sphere, Shell, PointParticle, Spherocylinder, Cube
+from .particle import Cube, PointParticle, Shell, Sphere, Spherocylinder
+from .psf import GaussianPSF, HuygensPSF
+
 try:
     from ._version import version as __version__
 except ImportError:
