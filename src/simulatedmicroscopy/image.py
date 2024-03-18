@@ -6,7 +6,6 @@ from typing import Optional
 
 import h5py
 import numpy as np
-import scipy.signal
 import skimage.measure
 
 from .input import Coordinates
@@ -398,9 +397,21 @@ class Image:
                 "Cannot convolve images with different pixel sizes"
             )
 
-        self.image = scipy.signal.convolve(
-            self.image, other.image, mode="same"
-        )
+        try:
+            import cupy as cp
+            from cupyx.scipy import signal as cusignal
+
+            self.image = cusignal.fftconvolve(
+                cp.asarray(self.image), cp.asarray(other.image), mode="same"
+            ).get()
+        except ImportError:
+            # resort to scipy if cupy is not available
+
+            import scipy.signal
+
+            self.image = scipy.signal.convolve(
+                self.image, other.image, mode="same"
+            )
 
         self.is_convolved = True
         self.metadata["is_convolved"] = True
