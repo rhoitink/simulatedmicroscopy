@@ -566,9 +566,18 @@ class HuygensImage(Image):
             raise FileNotFoundError("Requested file does not exist")
 
         with h5py.File(filepath, "r") as f:
-            image = np.squeeze(f[filepath.stem + "/ImageData/Image"][()])
+            root_elements = list(f.keys())
+            if len(root_elements) == 1:
+                root_element = root_elements[0]
+            else:
+                # find root element with ImageData
+                for re in root_elements:
+                    if "ImageData" in f[re].keys():
+                        root_element = re
+                        break
+            image = np.squeeze(f[root_element + "/ImageData/Image"][()])
             pixel_sizes = [
-                float(f[filepath.stem + f"/ImageData/DimensionScale{dim}"][()])
+                float(f[root_element + f"/ImageData/DimensionScale{dim}"][()])
                 for dim in list("ZYX")
             ]
 
