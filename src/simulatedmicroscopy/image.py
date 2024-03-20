@@ -162,7 +162,7 @@ class Image:
 
     @classmethod
     def load_h5file(cls, filename: str) -> type[Image]:
-        """Load data from h5 file (custom format)
+        """Load data from h5 file (custom format or HuygensImage)
 
         Parameters
         ----------
@@ -176,19 +176,40 @@ class Image:
         """
 
         with h5py.File(filename, "r") as f:
-            image = f["Image"][()]
-            pixel_sizes = [
-                float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
-                for dim in list("zyx")
-            ]
-            if "PixelCoordinates" in f["Metadata"]:
-                pixel_coordinates = f["Metadata/PixelCoordinates"][()]
+            root_elements = list(f.keys())
+            if "Image" in root_elements and "Metadata" in root_elements:
+                return cls._load_h5file_custom(f)
             else:
-                pixel_coordinates = None
+                return HuygensImage(filename)
+    
+    @staticmethod
+    def _load_h5file_custom(f: h5py.File) -> type[Image]:
+        """Load data from h5 file (custom format)
 
-            metadata = dict(f["Metadata"].attrs)
+        Parameters
+        ----------
+        f : h5py.File
+            File to load from
 
-        im = cls(image=image, pixel_sizes=pixel_sizes, metadata=metadata)
+        Returns
+        -------
+        Image
+            Resulting image with correct pixel sizes
+        """
+
+        image = f["Image"][()]
+        pixel_sizes = [
+            float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
+            for dim in list("zyx")
+        ]
+        if "PixelCoordinates" in f["Metadata"]:
+            pixel_coordinates = f["Metadata/PixelCoordinates"][()]
+        else:
+            pixel_coordinates = None
+
+        metadata = dict(f["Metadata"].attrs)
+
+        im = Image(image=image, pixel_sizes=pixel_sizes, metadata=metadata)
         if pixel_coordinates is not None:
             im.pixel_coordinates = pixel_coordinates
         return im
@@ -571,10 +592,15 @@ class HuygensImage(Image):
                 root_element = root_elements[0]
             else:
                 # find root element with ImageData
+                root_element = None
                 for re in root_elements:
                     if "ImageData" in f[re].keys():
                         root_element = re
                         break
+                if root_element is None:
+                    raise ValueError(
+                        "No ImageData found in the file, cannot load image"
+                    )
             image = np.squeeze(f[root_element + "/ImageData/Image"][()])
             pixel_sizes = [
                 float(f[root_element + f"/ImageData/DimensionScale{dim}"][()])
