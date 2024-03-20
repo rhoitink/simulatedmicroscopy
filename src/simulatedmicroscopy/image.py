@@ -6,7 +6,6 @@ from typing import Optional
 
 import h5py
 import numpy as np
-import scipy.signal
 import skimage.measure
 
 from .input import Coordinates
@@ -162,7 +161,7 @@ class Image:
 
     @classmethod
     def load_h5file(cls, filename: str) -> type[Image]:
-        """Load data from h5 file (custom format)
+        """Load data from h5 file (custom format or HuygensImage)
 
         Parameters
         ----------
@@ -176,19 +175,40 @@ class Image:
         """
 
         with h5py.File(filename, "r") as f:
-            image = f["Image"][()]
-            pixel_sizes = [
-                float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
-                for dim in list("zyx")
-            ]
-            if "PixelCoordinates" in f["Metadata"]:
-                pixel_coordinates = f["Metadata/PixelCoordinates"][()]
+            root_elements = list(f.keys())
+            if "Image" in root_elements and "Metadata" in root_elements:
+                return cls._load_h5file_custom(f)
             else:
-                pixel_coordinates = None
+                return HuygensImage(filename)
+    
+    @staticmethod
+    def _load_h5file_custom(f: h5py.File) -> type[Image]:
+        """Load data from h5 file (custom format)
 
-            metadata = dict(f["Metadata"].attrs)
+        Parameters
+        ----------
+        f : h5py.File
+            File to load from
 
-        im = cls(image=image, pixel_sizes=pixel_sizes, metadata=metadata)
+        Returns
+        -------
+        Image
+            Resulting image with correct pixel sizes
+        """
+
+        image = f["Image"][()]
+        pixel_sizes = [
+            float(f[f"Metadata/DimensionScale{dim.upper()}"][()])
+            for dim in list("zyx")
+        ]
+        if "PixelCoordinates" in f["Metadata"]:
+            pixel_coordinates = f["Metadata/PixelCoordinates"][()]
+        else:
+            pixel_coordinates = None
+
+        metadata = dict(f["Metadata"].attrs)
+
+        im = Image(image=image, pixel_sizes=pixel_sizes, metadata=metadata)
         if pixel_coordinates is not None:
             im.pixel_coordinates = pixel_coordinates
         return im
@@ -398,9 +418,21 @@ class Image:
                 "Cannot convolve images with different pixel sizes"
             )
 
-        self.image = scipy.signal.convolve(
-            self.image, other.image, mode="same"
-        )
+        try:
+            import cupy as cp
+            from cupyx.scipy import signal as cusignal
+
+            self.image = cusignal.fftconvolve(
+                cp.asarray(self.image), cp.asarray(other.image), mode="same"
+            ).get()
+        except ImportError:
+            # resort to scipy if cupy is not available
+
+            import scipy.signal
+
+            self.image = scipy.signal.convolve(
+                self.image, other.image, mode="same"
+            )
 
         self.is_convolved = True
         self.metadata["is_convolved"] = True
@@ -566,9 +598,23 @@ class HuygensImage(Image):
             raise FileNotFoundError("Requested file does not exist")
 
         with h5py.File(filepath, "r") as f:
-            image = np.squeeze(f[filepath.stem + "/ImageData/Image"][()])
+            root_elements = list(f.keys())
+            if len(root_elements) == 1:
+                root_element = root_elements[0]
+            else:
+                # find root element with ImageData
+                root_element = None
+                for re in root_elements:
+                    if "ImageData" in f[re].keys():
+                        root_element = re
+                        break
+                if root_element is None:
+                    raise ValueError(
+                        "No ImageData found in the file, cannot load image"
+                    )
+            image = np.squeeze(f[root_element + "/ImageData/Image"][()])
             pixel_sizes = [
-                float(f[filepath.stem + f"/ImageData/DimensionScale{dim}"][()])
+                float(f[root_element + f"/ImageData/DimensionScale{dim}"][()])
                 for dim in list("ZYX")
             ]
 

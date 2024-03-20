@@ -2,10 +2,10 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Simulated Microscopy
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+title: >-
+  Simulated Microscopy: A Python Package for Simulation of
+  Confocal Microscopy Data based on Particle Coordinates
+message: 'If you use this software, please cite using the Zenodo DOI.'
 type: software
 authors:
   - given-names: Leroy Daniël
@@ -15,6 +15,10 @@ authors:
       Soft Condensed Matter & Biophysics, Debye Institute
       for Nanomaterials Science, Utrecht University
     orcid: 'https://orcid.org/0000-0002-3470-0078'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.10678180
+    description: Zenodo
 repository-code: 'https://github.com/rhoitink/simulatedmicroscopy'
 url: 'https://rhoitink.github.io/simulatedmicroscopy/'
 abstract: >-
@@ -28,5 +32,5 @@ keywords:
   - point spread function
   - image generation
 license: MIT
-version: "v1.6.1"
+version: v1.6.1
 date-released: '2024-02-19'

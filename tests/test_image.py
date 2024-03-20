@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from simulatedmicroscopy import HuygensImage, Image
+from simulatedmicroscopy import HuygensImage, Image, HuygensPSF
 
 
 def create_demo_image():
@@ -40,6 +40,25 @@ def test_huygens_notexisting(tmp_path):
     with pytest.raises(FileNotFoundError):
         HuygensImage(tmp_path / "thisfiledoesnotexist.h5")
 
+def test_huygens_loading(tmp_path):
+    import h5py
+    im = create_demo_image()
+    pixel_sizes = im.get_pixel_sizes()
+    filename = tmp_path / "testfile.hdf5"
+    with h5py.File(filename, "w") as f:
+        root = f.create_group("testfile")
+        root.create_dataset("ImageData/Image", data=im.image)
+        [root.create_dataset(f"ImageData/DimensionScale{dim}", data=pixel_sizes[i]) for i,dim in enumerate(list("ZYX"))]
+    
+    
+    im_loaded = im.load_h5file(filename)
+    im_loaded_huygens_im = HuygensImage(filename)
+    im_loaded_huygens_psf = HuygensPSF(filename)
+
+
+    assert im_loaded == im
+    assert im_loaded_huygens_im == im
+    assert im_loaded_huygens_psf == im
 
 @pytest.mark.parametrize(
     "unit,conversionfactor",
